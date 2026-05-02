@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use AURUM in research or practice, please cite it."
+type: software
+title: "AURUM — Practitioner MDM Reference Implementation"
+version: 0.1.0
+date-released: "2026-05-02"
+license: MIT
+repository-code: https://github.com/RajaMDM/AURUM
+authors:
+  - family-names: Soni
+    given-names: Raja Shahnawaz
+    alias: RajaMDM
+    website: https://linkedin.com/in/raja-shahnawaz/
+keywords:
+  - master-data-management
+  - mdm
+  - data-quality
+  - data-governance
+  - golden-record
+  - entity-resolution
+  - power-platform
+  - mcp
+  - ai-augmented
+abstract: >
+  AURUM is a vendor-agnostic AI-augmented MDM reference covering the full
+  data lifecycle across 7 domains. Five stages: ASSAY, UNEARTH, REFINE,
+  UNFURL, MARK. Python-native, MCP-compatible, Power Platform companion included.

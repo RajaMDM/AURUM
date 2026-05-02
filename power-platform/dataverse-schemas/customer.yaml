@@ -1,0 +1,70 @@
+# AURUM Customer Domain — Dataverse Entity Schema
+# Deploy with: pac solution import
+entity:
+  logical_name: aurum_customer
+  display_name: "AURUM Customer"
+  plural_name: "AURUM Customers"
+  description: "Golden record for the Customer domain (AURUM REFINE output)"
+  ownership: UserOwned
+  audit_enabled: true
+
+columns:
+  - logical_name: aurum_customerid
+    display_name: "Customer ID"
+    type: Uniqueidentifier
+    is_primary_key: true
+
+  - logical_name: aurum_firstname
+    display_name: "First Name"
+    type: SingleLineOfText
+    max_length: 100
+    required: true
+
+  - logical_name: aurum_lastname
+    display_name: "Last Name"
+    type: SingleLineOfText
+    max_length: 100
+    required: true
+
+  - logical_name: aurum_email
+    display_name: "Email"
+    type: SingleLineOfText
+    format: Email
+    max_length: 320
+
+  - logical_name: aurum_phone
+    display_name: "Phone"
+    type: SingleLineOfText
+    format: Phone
+    max_length: 50
+
+  - logical_name: aurum_city
+    display_name: "City"
+    type: SingleLineOfText
+    max_length: 100
+
+  - logical_name: aurum_country
+    display_name: "Country"
+    type: SingleLineOfText
+    max_length: 100
+
+  - logical_name: aurum_trustscore
+    display_name: "Trust Score"
+    type: Decimal
+    min: 0
+    max: 1
+    precision: 2
+
+  - logical_name: aurum_isgolden
+    display_name: "Is Golden Record"
+    type: TwoOptions
+    default: false
+
+  - logical_name: aurum_sourcesystems
+    display_name: "Source Systems"
+    type: MultipleLineOfText
+    description: "Pipe-delimited list of contributing source systems"
+
+  - logical_name: aurum_goldenrecorddate
+    display_name: "Golden Record Date"
+    type: DateAndTime

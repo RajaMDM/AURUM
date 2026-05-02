@@ -1,0 +1,55 @@
+name: AURUM CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Pipeline Verification
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -r requirements.txt pytest pytest-cov
+      - run: python shared/sample_data/generate_all.py
+      - run: python demo/end_to_end_demo.py
+      - name: Unit tests
+        run: |
+          if compgen -G "tests/*.py" > /dev/null 2>&1; then
+            pytest tests/ -v --tb=short
+          else
+            echo "No tests yet — skipping"
+          fi
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: ruff check . --ignore E501
+        continue-on-error: true
+
+  audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pip-audit
+      - run: pip-audit -r requirements.txt || true
+        continue-on-error: true
