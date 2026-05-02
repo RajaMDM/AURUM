@@ -1,3 +1,25 @@
+#!/usr/bin/env bash
+# =============================================================================
+# patch_aurum_v5_honest.sh — Path A: Make the README honest.
+# Rewrites README.md, creates ROADMAP.md and CHANGELOG.md.
+# Adds an explicit v0.1.1 vs v0.2.0 split so practitioners aren't misled.
+# =============================================================================
+set -euo pipefail
+
+if [ ! -d ".git" ]; then
+  echo "ERROR: run from the AURUM repo root."
+  exit 1
+fi
+
+echo "==> Backing up to .patch_backup/v5/..."
+mkdir -p .patch_backup/v5
+cp README.md .patch_backup/v5/README.md.bak
+
+# =============================================================================
+# README.md — Honest version
+# =============================================================================
+echo "==> Writing honest README.md..."
+cat > README.md << 'MD_EOF'
 # AURUM
 
 [![CI](https://github.com/RajaMDM/AURUM/actions/workflows/ci.yml/badge.svg)](https://github.com/RajaMDM/AURUM/actions/workflows/ci.yml)
@@ -259,3 +281,232 @@ builder of [The MDM Lab](https://data-alchemist.raja-cloudmdm.workers.dev),
 ## License
 
 MIT © Raja Shahnawaz Soni — see [LICENSE](LICENSE)
+MD_EOF
+
+# =============================================================================
+# ROADMAP.md
+# =============================================================================
+echo "==> Writing ROADMAP.md..."
+cat > ROADMAP.md << 'MD_EOF'
+# AURUM Roadmap
+
+This document captures what's planned, what triggers each milestone, and what
+practitioners can expect to see when. The README's Component Status table
+links here for any item marked 📋.
+
+---
+
+## v0.1.1 — Released
+
+The first defensible reference. Architecturally complete pipeline with one
+fully-working domain (Customer) end-to-end.
+
+**What landed:**
+- All 5 stages scaffolded with correct directory structure
+- ASSAY: Schema inspector
+- UNEARTH: Customer profiler with format/completeness/consistency rules
+- REFINE: Matcher with name-boost floor, transitive cluster builder,
+  standardize → validate → survive survivorship pipeline, linked-tuple
+  geography to prevent frankenrecords
+- MARK: In-memory lineage tracker
+- Runtimes: MCP server with 3 working tools
+- Power Platform: Customer Dataverse schema
+- Demo: End-to-end pipeline with CI assertions
+- Trust files: SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, CITATION
+
+---
+
+## v0.2.0 — Working AI + Power Platform breadth
+
+The release that makes the README's AI claims real and the Power Platform
+companion track substantive.
+
+### UNEARTH — AI components
+
+- **`unearth/llm_rules/`** — LLM-based DQ rule generator
+  - Input: business description in plain English ("phone numbers must be
+    UAE-format if country is UAE")
+  - Output: executable Python rule attached to the rule engine
+  - Backend: Anthropic API (configurable to OpenAI)
+- **`unearth/anomaly/`** — ML anomaly detector
+  - Isolation Forest from scikit-learn
+  - Per-domain feature engineering
+  - Outputs flagged records with anomaly scores for steward review
+
+### REFINE — LLM tiebreaker
+
+- For pairs scoring between 0.55 and 0.65 (the borderline zone),
+  invoke an LLM with structured output to make the match decision
+- Logged separately for steward audit
+- Caps usage to avoid LLM cost runaway
+
+### MARK — Reverse integration that actually works
+
+- **`mark/reverse_sync/`** — given a golden record change, compute
+  affected downstream consumers and produce an ordered sync plan
+- **`mark/reconciliation/`** — detect when a downstream system has
+  drifted from the master (scheduled job pattern)
+
+### Power Platform — beyond one schema
+
+- All 7 domains as Dataverse YAML (currently 1)
+- 3 Power Automate flow JSON exports:
+  - Steward Approval workflow
+  - Exception Routing
+  - Daily Reconciliation
+- AI Builder model definitions (DQ Score Predictor)
+- Copilot Studio bot config (MDM Steward Assistant)
+
+### Trigger to start v0.2.0
+Either (a) external interest signal — first 5 stars or first issue — or
+(b) week of focused build time available. Whichever comes first.
+
+---
+
+## v0.3.0 — Per-domain depth
+
+Once v0.2.0 ships, the next investment is depth across the other 6 domains.
+
+- Profilers for Product, Vendor, Asset, Location, Employee, Counterparty
+- Domain-specific matchers (Product needs SKU normalization; Vendor needs
+  legal entity disambiguation; Asset needs lifecycle-aware matching)
+- Domain-specific Dataverse schemas with relationships
+
+---
+
+## v0.4.0 — Runtime breadth
+
+- FastAPI HTTP runtime with full OpenAPI docs
+- Streamlit UI for steward operations
+- Airflow / Prefect / Dagster orchestration
+- CLI with click
+
+---
+
+## v1.0.0 — First stable release
+
+Trigger: 100+ stars, at least 3 external contributors with merged PRs,
+CI green for 30 consecutive days, all v0.2.0 and v0.3.0 items shipped.
+
+At v1.0.0 the certification program (currently outline only) ships with
+real lab content and assessment.
+
+---
+
+## Out of Scope (current)
+
+- Vendor-locked implementations (Informatica, Reltio, Stibo)
+- Real production deployment (this is a reference, not a tool)
+- Customer-facing UI beyond Streamlit
+- Multi-tenancy patterns (single-org reference is the focus)
+
+---
+
+*Maintained by [@RajaMDM](https://github.com/RajaMDM). Open a
+[Discussion](../../discussions) to propose roadmap changes.*
+MD_EOF
+
+# =============================================================================
+# CHANGELOG.md
+# =============================================================================
+echo "==> Writing CHANGELOG.md..."
+cat > CHANGELOG.md << 'MD_EOF'
+# Changelog
+
+All notable changes to AURUM will be documented in this file.
+
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
+
+---
+
+## [v0.1.1] — 2026-05-02
+
+### Changed
+- **Survivorship pipeline rewritten** with three-step architecture:
+  standardize → validate → survive. Real MDM tools cleanse before
+  validating before surviving; v0.1.0 jumped straight to validate.
+- **Names** now use independent per-field survivorship (the matcher
+  established identity; survivorship picks the cleanest version of each
+  attribute independently).
+- **Geography** (city, country) now uses linked-tuple survivorship —
+  the whole tuple comes from one source. Prevents the "Dubai, UK"
+  frankenrecord failure mode where independent field selection produces
+  geographically impossible combinations.
+- **Trust score reformulated**: 0.6 × completeness + 0.4 × source
+  diversity. Single-source records cannot exceed ~0.73 — diversity matters.
+- **Matcher re-weighted**: name 0.65, email 0.25, phone 0.10. Added a
+  name-boost floor so strong name matches alone can carry a pair.
+  Threshold lowered to 0.65 with the boost.
+- **Sample data generator** now emits geographically-consistent dirty
+  pairs (Dubai always with a UAE variant; London always with a UK variant).
+  Format variation is realistic dirt; geographic mismatch was unrealistic.
+
+### Added
+- **Standardization layer** (`standardize_name`) reverses known dirt
+  patterns before validation: leetspeak (@→a in non-email context),
+  trailing punctuation. Pluggable via `standardizer` callable for
+  domain-specific rules.
+- **Transitive cluster builder** (`build_cluster_ids`) — connected
+  components on the match graph. A→B and B→C cluster {A, B, C} even if
+  A→C wasn't directly scored above threshold.
+- **Demo assertions as CI guards**:
+  - `len(matches) > 0`, `len(cluster) >= 2`
+  - No `@` characters in golden names (validator regression check)
+  - Nameless-record assertion (fails loud if validator/standardizer break)
+  - Frankenrecord geography assertion (golden city + country must
+    co-exist as a pair in some cluster source)
+
+### Fixed
+- v0.1.0 produced a "golden record" called `S@R@H Smith` with a misleading
+  trust score of 1.0. Names are now standardized before validation.
+- v0.1.0 found zero matches above threshold despite duplicates in the data.
+  The matcher reweighting and name-boost floor fix this.
+- v0.1.0 trust score measured only attribute fill rate, ignoring source
+  diversity. Any random row with all fields filled scored 1.0. Fixed.
+
+### Documentation
+- README rewritten with explicit Component Status table — every component
+  marked ✅ Working, 🔧 Stub, or 📋 Planned. No more overpromising.
+- ROADMAP.md added — captures v0.2.0, v0.3.0, v0.4.0, v1.0.0 milestones
+  and triggers.
+- CHANGELOG.md added — this file.
+
+---
+
+## [v0.1.0] — 2026-05-02
+
+### Added
+- Initial reference implementation across all 5 stages
+- 7 domain models (Pydantic)
+- Sample data generator (deliberately dirty across 4 domains)
+- ASSAY schema inspector
+- UNEARTH Customer profiler
+- REFINE matcher and survivorship (v1 — superseded in v0.1.1)
+- UNFURL publisher stub
+- MARK lineage tracker
+- MCP server with 3 tools
+- Power Platform Customer Dataverse schema
+- Certification program outline (3-tier curriculum)
+- CI workflow (Python 3.10/3.11/3.12)
+- Trust files: SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, CITATION, LICENSE
+MD_EOF
+
+echo ""
+echo "==> Files written. Verify diff is clean:"
+git diff --stat README.md
+echo ""
+echo "==> Then commit + push:"
+echo ""
+echo "    git add -A"
+echo "    cat > /tmp/aurum_msg.txt << 'EOF'"
+echo "    docs: honest README + ROADMAP + CHANGELOG (v0.1.1)"
+echo ""
+echo "    Replaces overpromising status table with explicit Component Status"
+echo "    using three honest tiers: Working, Stub, Planned. Adds ROADMAP.md"
+echo "    capturing v0.2.0 commitments (real AI components, reverse integration,"
+echo "    Power Platform breadth) and CHANGELOG.md documenting the v0.1.0 to"
+echo "    v0.1.1 architectural rewrite."
+echo "    EOF"
+echo "    git commit -F /tmp/aurum_msg.txt"
+echo "    git push"
