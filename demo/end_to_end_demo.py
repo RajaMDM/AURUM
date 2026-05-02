@@ -1,25 +1,21 @@
 """
 AURUM End-to-End Pipeline Demo
-Runs the full ASSAY → UNEARTH → REFINE → UNFURL → MARK arc
-on synthetic customer data.
+Runs the full ASSAY → UNEARTH → REFINE → UNFURL → MARK arc.
 
 Usage:
-    python shared/sample_data/generate_all.py   # generate dirty data first
+    python shared/sample_data/generate_all.py
     python demo/end_to_end_demo.py
 """
 import sys
-import json
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 
-from shared.sample_data.generate_all import (
-    generate_customers, generate_products, generate_assets, generate_locations, OUTPUT_DIR
-)
+from shared.sample_data.generate_all import generate_customers, OUTPUT_DIR
 from assay.schema_inspector.inspector import SchemaInspector
 from unearth.profiler.domain_profiler import CustomerProfiler
-from refine.matching.matcher import find_candidates
+from refine.matching.matcher import find_candidates, build_cluster_ids
 from refine.golden_record.survivorship import build_golden_record
 from unfurl.publish.publisher import GoldenRecordPublisher
 from mark.lineage.tracker import LineageTracker
@@ -35,7 +31,7 @@ def separator(title: str) -> None:
 
 def main() -> None:
     print("\n╔══════════════════════════════════════════════════════════╗")
-    print("║  AURUM — End-to-End Pipeline Demo                       ║")
+    print("║  AURUM — End-to-End Pipeline Demo                        ║")
     print("║  Raw data in. Hallmarked golden records out.             ║")
     print("╚══════════════════════════════════════════════════════════╝")
 
@@ -69,23 +65,61 @@ def main() -> None:
     # ── STAGE 03: REFINE ─────────────────────────────────────────────
     separator("STAGE 03: REFINE — Fuse many into one golden record")
     df = pd.read_csv(customer_path, dtype=str, keep_default_na=False)
-    candidates = find_candidates(df, sample_size=20)
+
+    candidates = find_candidates(df, sample_size=50)
     matches = [c for c in candidates if c.is_match]
     print(f"  Candidates:     {len(candidates)}")
-    print(f"  Matches (≥0.75):{len(matches)}")
-    if matches:
-        top = matches[0]
-        print(f"  Top match:      {top.record_a_id} ↔ {top.record_b_id}  score={top.composite_score}")
+    print(f"  Matches (≥0.65):{len(matches)}")
 
-    # Build a golden record from a small cluster
-    cluster = df.head(4).to_dict("records")
+    if not matches:
+        raise RuntimeError("REFINE: zero matches — investigate matcher or sample data.")
+
+    top = matches[0]
+    print(f"  Top match:      {top.record_a_id} ↔ {top.record_b_id}  "
+          f"composite={top.composite_score}  "
+          f"(name={top.name_score}, email={top.email_score}, phone={top.phone_score})")
+
+    cluster_ids = build_cluster_ids(matches)
+    cluster = df[df["source_id"].isin(cluster_ids)].to_dict("records")
+    print(f"  Cluster size:   {len(cluster)} records (from {len(set(r['source_system'] for r in cluster))} sources)")
+
     golden = build_golden_record(cluster)
     print(f"  Golden record:  {golden['first_name']} {golden['last_name']}")
-    print(f"  Trust score:    {golden['trust_score']}")
+    print(f"                  email: {golden['email'] or '(none valid)'}")
+    print(f"                  phone: {golden['phone'] or '(none)'}")
+    print(f"                  {golden['city']}, {golden['country']}")
+    print(f"  Trust score:    {golden['trust_score']}  "
+          f"(completeness={golden['trust_components']['completeness']}, "
+          f"diversity={golden['trust_components']['source_diversity']})")
     print(f"  Sources merged: {golden['source_systems']}")
-    assert golden["is_golden"] is True, "REFINE: golden flag not set"
-    assert golden["trust_score"] > 0, "REFINE: trust score is zero"
-    print("  ✅ REFINE passed")
+
+    # Cluster + trust guards
+    assert len(matches) > 0,             "REFINE: no matches"
+    assert len(cluster) >= 2,            "REFINE: cluster smaller than 2"
+    assert golden["is_golden"] is True,  "REFINE: golden flag not set"
+    assert golden["trust_score"] >= 0.6, "REFINE: trust score below golden threshold"
+
+    # Name guards — corrupted strings rejected, no nameless golden records
+    assert "@" not in golden["first_name"],          "REFINE: corrupted first_name leaked through validator"
+    assert "@" not in golden["last_name"],           "REFINE: corrupted last_name leaked through validator"
+    assert golden["first_name"].strip(),             "REFINE: nameless golden record (first_name empty) — validator too strict or cluster too dirty"
+    assert golden["last_name"].strip(),              "REFINE: nameless golden record (last_name empty) — validator too strict or cluster too dirty"
+
+    # FRANKENRECORD GUARD: city + country must come from the same cluster source
+    if golden["city"] and golden["country"]:
+        src_pairs = {
+            (r.get("city","").lower().strip(), r.get("country","").upper().strip())
+            for r in cluster
+            if r.get("city","").strip() and r.get("country","").strip()
+        }
+        gold_pair = (golden["city"].lower(), golden["country"])
+        assert gold_pair in src_pairs, (
+            f"REFINE: frankenrecord — golden ({gold_pair[0]}, {gold_pair[1]}) "
+            f"not co-located in any cluster source. "
+            f"Real source pairs: {sorted(src_pairs)}"
+        )
+
+    print("  ✅ REFINE passed (incl. name + geography guards)")
 
     # ── STAGE 04: UNFURL ─────────────────────────────────────────────
     separator("STAGE 04: UNFURL — Issue to the world")
