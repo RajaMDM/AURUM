@@ -137,7 +137,7 @@ Three statuses, no fudge:
 |-----------|--------|-------|
 | MCP server | ✅ Working | 3 tools: `assay_schema`, `unearth_profile`, `refine_match` |
 | CLI (click + rich) | ✅ Working | 5 commands: `assay`, `unearth`, `anomaly`, `demo`, `domains` |
-| FastAPI HTTP runtime | 📋 Planned | v0.2.0 |
+| FastAPI HTTP runtime | ✅ Working | 6 endpoints, multipart CSV upload, OpenAPI/ReDoc docs |
 | Streamlit UI | 📋 Planned | v0.2.0 |
 | Airflow / Prefect orchestration | 📋 Planned | Stubs only |
 
@@ -218,6 +218,19 @@ python -m runtimes.cli demo
 ```
 
 Every CLI command supports `--json-out` for machine-readable output.
+
+### HTTP API
+
+```bash
+uvicorn runtimes.api.main:app --reload --port 8000
+# OpenAPI docs:  http://localhost:8000/docs
+# ReDoc:         http://localhost:8000/redoc
+
+# Examples
+curl -F file=@shared/sample_data/output/customers_dirty.csv http://localhost:8000/assay
+curl -F file=@shared/sample_data/output/customers_dirty.csv http://localhost:8000/unearth/customer
+curl -F file=@shared/sample_data/output/customers_dirty.csv "http://localhost:8000/anomaly?domain=customer"
+```
 
 ---
 

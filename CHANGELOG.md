@@ -10,6 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [v0.1.3] — 2026-05-04
 
 ### Added
+- **`runtimes/api/`** — FastAPI HTTP runtime exposing the pipeline as 6
+  endpoints: `GET /` (metadata), `GET /health`, `GET /domains`, `POST /assay`,
+  `POST /unearth/{domain}` (all 7 domains), `POST /anomaly`. Multipart CSV
+  upload only — server-side file paths are deliberately not accepted to
+  avoid path-traversal risk on any deployment beyond localhost. Auto-generated
+  OpenAPI docs at `/docs` and ReDoc at `/redoc`.
+- **`tests/test_api.py`** — 13 integration tests using Starlette's TestClient
+  (no live server needed): meta endpoints, ASSAY against a real CSV,
+  UNEARTH for both customer and product domains, 404 on unknown domain,
+  case-insensitive domain matching, anomaly detection with bounds
+  enforcement, OpenAPI surface verification, plus content-type and
+  empty-file rejection paths.
 - **`unearth/llm_rules/`** — LLM rule generator. Translates steward prose
   into reviewable Python rules via the Anthropic SDK (tool-use structured
   output, prompt caching on the system prompt). Each generated rule is
