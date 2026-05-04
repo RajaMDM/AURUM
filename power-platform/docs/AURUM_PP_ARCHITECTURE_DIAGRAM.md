@@ -5,7 +5,7 @@ A visual companion to `AURUM_PP_TECHNICAL_LAYOUT.md` §2. Shows the five AURUM s
 The diagram makes two claims visible. First, that AURUM-PP follows the AURUM 5-stage architecture as a literal data flow, not just a vocabulary borrow — each stage produces an artifact the next stage consumes. Second, that the matcher dependency on the parent AURUM repo crosses an implementation boundary at runtime: `scripts/load_sample_data.py` imports `score_pair()` from `refine.matching.matcher` and feeds the resulting composite scores into the staging tables that the REFINE flows trigger on. Removing the parent-repo dependency would break score generation; nothing else in the diagram would change.
 
 ```mermaid
-flowchart LR
+flowchart TD
     %% Parent AURUM repo (external to Power Platform layer)
     AURUM[("refine.matching.matcher<br/>(parent AURUM repo)")]:::external
 
