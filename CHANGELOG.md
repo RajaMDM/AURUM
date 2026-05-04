@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [v0.1.3] — 2026-05-04
 
 ### Added
+- **`runtimes/cli/`** — `python -m runtimes.cli` CLI built on click + rich
+  with five commands: `assay` (schema inspection), `unearth <domain>`
+  (DQ profiling for any of the 7 domains), `anomaly` (Isolation Forest
+  detection), `demo` (end-to-end pipeline), `domains` (list supported
+  domains). Every command supports `--json-out` for machine-readable
+  output, and `unearth`/`anomaly` carry `--show-issues` / `--show-flagged`
+  for output-size control. Versioned at 0.1.3 via `--version`.
 - **`unearth/anomaly/`** — Isolation Forest anomaly detector with generic
   per-column feature engineering (length, character composition, null state,
   row-level empty count). Operates on any CSV across all 7 domains; flags

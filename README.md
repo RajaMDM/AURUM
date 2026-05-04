@@ -136,7 +136,7 @@ Three statuses, no fudge:
 | Component | Status | Notes |
 |-----------|--------|-------|
 | MCP server | ✅ Working | 3 tools: `assay_schema`, `unearth_profile`, `refine_match` |
-| CLI | 📋 Planned | Directory scaffolded |
+| CLI (click + rich) | ✅ Working | 5 commands: `assay`, `unearth`, `anomaly`, `demo`, `domains` |
 | FastAPI HTTP runtime | 📋 Planned | v0.2.0 |
 | Streamlit UI | 📋 Planned | v0.2.0 |
 | Airflow / Prefect orchestration | 📋 Planned | Stubs only |
@@ -201,6 +201,18 @@ python demo/end_to_end_demo.py
 
 The demo runs ASSAY → UNEARTH → REFINE → UNFURL → MARK end-to-end with
 assertions for cluster integrity, frankenrecord detection, and trust scoring.
+
+### CLI usage
+
+```bash
+python -m runtimes.cli --help
+python -m runtimes.cli assay shared/sample_data/output/customers_dirty.csv
+python -m runtimes.cli unearth customer shared/sample_data/output/customers_dirty.csv
+python -m runtimes.cli anomaly shared/sample_data/output/customers_dirty.csv --domain customer
+python -m runtimes.cli demo
+```
+
+Every CLI command supports `--json-out` for machine-readable output.
 
 ---
 
