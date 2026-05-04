@@ -35,3 +35,9 @@ token.json
 .msal_cache.bin
 # Sample-data manifest is regeneratable and contains environment-specific GUIDs
 power-platform/scripts/sample_data_manifest_*.json
+
+# Microsoft Office lock/temp files (Word/Excel/PowerPoint create these while editing)
+~$*
+
+# Generated Office artifacts — markdown is canonical, .docx is regeneratable via pandoc
+power-platform/docs/*.docx

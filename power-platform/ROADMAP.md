@@ -12,11 +12,11 @@ Forward-looking planning doc. Where the project is heading, what's blocked, what
 | Phase 4 — Power Automate flows | 🟡 partial (2 of 3) | Flow 1 (Auto-Approve, ~8s) and Flow 2 (Steward Review, ~24s) both verified for CRM. Flow 3 deferred to Day 4. |
 | Phase 5+ | not started | Polish, ECOMM/LOYALTY replication, dashboards, solution-export IaC pipeline. See "Future phases" + deferred backlog below. |
 
-## Day 4 plan
+## Next session priorities (Cowork handoff)
 
 1. **Build Flow 3 — Promote Unmatched to Canonical (CRM)** — manual instant trigger (Option A locked). Test subjects: Hassan Bin Saeed or Joana Reyes (CRM prospects). Field mapping is verbose; trust_score=0.73 formula already verified. **~45–60 min** build.
 2. **Capture screenshots of all 3 flows** for blog/touchpoint use.
-3. **Expand `docs/TOMORROW_TECHNICAL_TOUCHPOINT.md`** from skeleton to full doc — work and students audiences both addressed.
+3. **Write `docs/COMPREHENSIVE_TECHNICAL_LAYOUT.md`** — full document (not the bullet skeleton at `docs/TOMORROW_TECHNICAL_TOUCHPOINT.md`). Cowork follows the prompt saved at `docs/COWORK_HANDOFF_PROMPT.md`. **Note:** a v1 draft already exists at `docs/AURUM_PP_TECHNICAL_LAYOUT.md` (4,543 words, written 2026-05-04 morning Cowork session). Next Cowork session can use as starting point, supersede, or rename.
 4. **Optional:** ECOMM/LOYALTY flow replication via solution-export IaC pipeline (Phase 5 work — see below).
 
 ## Deferred backlog (Phase 5 cleanup tomorrow)

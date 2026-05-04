@@ -27,8 +27,10 @@ Phase 4 progressed from 1-of-3 to 2-of-3 flows live. End of session.
 
 ### Documentation delivered Day 3 morning
 
-- `ROADMAP.md` — added "Phase 5+ — Solution-export-based flow IaC pipeline" section with trigger, 4-step approach, effort estimate, and Day 3 blocker context.
-- `DEFENSE_BRIEF.md` — added 2026-05-04 "On 'AURUM-PP is IaC' claims" section (hybrid-IaC framing).
+- `ROADMAP.md` — added "Phase 5+ — Solution-export-based flow IaC pipeline" section with trigger, 4-step approach, effort estimate, and Day 3 blocker context. Day 4 plan converted to "Next session priorities (Cowork handoff)" referencing the comprehensive-technical-layout work.
+- `DEFENSE_BRIEF.md` — added 2026-05-04 "On 'AURUM-PP is IaC' claims" section (hybrid-IaC framing) plus 2026-05-04 "Day 3 morning talking points" (two REFINE flows in motion, latency caveat, Flow 3 deferral rationale).
+- `docs/AURUM_PP_TECHNICAL_LAYOUT.md` — comprehensive technical layout doc (4,543 words) covering project context, 5-stage architecture mapping, deployed components inventory (schemas, sample data, model-driven app, flows), AURUM repo touchpoints, IaC posture, Reality Auditor moments, open risks, reliability plan, demo narrative arcs. Generated via Cowork session 2026-05-04 morning.
+- `docs/COWORK_HANDOFF_PROMPT.md` — verbatim handoff prompt for the next Cowork session covering Flow 3 build + comprehensive technical layout doc.
 - Memory drift fix — `project_aurum_pp.md` and `project_aurum_pp_resume_next_session.md` updated to reflect new working dir (`~/Projects/AURUM/power-platform/`, not `~/Projects/AURUM-PP/`) and Day 3 phase state.
 
 ## 2026-05-03 — Day 2 wrap (end of day)
