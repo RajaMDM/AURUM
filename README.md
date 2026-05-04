@@ -101,7 +101,7 @@ Three statuses, no fudge:
 | Counterparty profiler | ✅ Working | LEI (ISO 17442), role flagging, jurisdiction |
 | DQ rule engine (standalone) | 🔧 Stub | Rules currently embedded in profilers |
 | ML anomaly detector | ✅ Working | Isolation Forest with generic per-column feature engineering |
-| LLM rule generator | 📋 Planned | Anthropic API integration planned for v0.2.0 |
+| LLM rule generator | ✅ Working | Anthropic SDK + tool-use schema + AST safety guards; rules saved for steward review, never auto-promoted |
 
 ### REFINE — Stage 03
 
@@ -178,6 +178,11 @@ components are:
   combinations are unlike the rest of the dataset. Generic per-column
   feature engineering (length, character composition, null state) so it
   works across all 7 domains without per-domain tuning. Deterministic.
+- **UNEARTH LLM rule generator** — translates steward prose ("phone numbers
+  must be UAE-format if country is UAE") into deterministic Python rules
+  via the Anthropic SDK with tool-use structured output. Saves to a
+  `generated/` directory for human review; never auto-promotes. AST
+  safety guards reject imports, eval/exec, and missing `check` functions.
 - **MCP server** — exposes the AURUM pipeline as an MCP-compatible server
   invokable from Claude Code, Cursor, and any Hermes/Nous-based agentic runtime.
 

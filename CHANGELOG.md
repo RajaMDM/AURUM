@@ -10,6 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [v0.1.3] — 2026-05-04
 
 ### Added
+- **`unearth/llm_rules/`** — LLM rule generator. Translates steward prose
+  into reviewable Python rules via the Anthropic SDK (tool-use structured
+  output, prompt caching on the system prompt). Each generated rule is
+  written to `unearth/llm_rules/generated/` as a Python module plus a
+  JSON sidecar carrying the original prompt, model, and timestamp — the
+  audit trail required for steward replay. Rules are NEVER auto-promoted.
+  AST safety guards reject imports, eval/exec/open calls, and bodies
+  that don't define a `check(row: dict) -> bool` function.
+- **`tests/test_llm_rules.py`** — 11 tests using a fake Anthropic-compatible
+  client (no network calls): rule compilation, system-prompt cache_control,
+  forced tool_choice, name sanitisation, dangerous-body rejection, import
+  rejection, missing-`check` rejection, empty-prose rejection, missing
+  API key behaviour, save-to-disk shape, and missing tool_use handling.
 - **`runtimes/cli/`** — `python -m runtimes.cli` CLI built on click + rich
   with five commands: `assay` (schema inspection), `unearth <domain>`
   (DQ profiling for any of the 7 domains), `anomaly` (Isolation Forest
