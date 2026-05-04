@@ -2,6 +2,35 @@
 
 Every significant change with date, what changed, why, and business impact. Companion to `PROJECT_HISTORY.md` (narrative), `TECH_MEMORY.md` (decisions), `ROADMAP.md` (forward-looking), `DEFENSE_BRIEF.md` (defense talking points). Newest first.
 
+## 2026-05-04 — Day 3 morning
+
+Phase 4 progressed from 1-of-3 to 2-of-3 flows live. End of session.
+
+### Phase 4 — Power Automate flows 🟡 PARTIAL (2 of 3 built)
+
+**Flow 1 — Auto-Approve High-Confidence Match (CRM)** ✅ verified working (carried over from Day 2)
+- End-to-end latency ~**8s** on Sarah Chen test (yesterday).
+
+**Flow 2 — Steward Review Required (CRM)** ✅ COMPLETE
+- Built in maker UI (after Reality Auditor stop on programmatic POST attempt — see below). Activated.
+- Trigger: `aurum_match_confidence >= 0.55 AND < 0.65 AND aurum_processing_status = 3 (MATCHED)` on `aurum_crm_customer`.
+- Action: Update staging row's `aurum_processing_status = 5 (STEWARD_REVIEW)`. Teams notification skipped per locked decision.
+- **Verified end-to-end via `scripts/test_flow2.py` on Mohammed Al-Rashid CRM record:** PATCH staging status to 3, wait, status flipped back to 5 in **~24 seconds**. Workflow registry confirms `category=Modern Flow, statecode=Activated`.
+
+**Flow 3 — Promote Unmatched to Canonical (CRM)** ⏸ DEFERRED to next session
+- Architecturally different shape (manual instant trigger + create-row + multi-field map + canonical lookup relink) warrants fresh focus rather than tail-end-of-session build. Spec already locked in `docs/phase4_flow_specifications.md`.
+
+### Reality Auditor catches this session
+
+- **Programmatic flow deployment investigated and stopped at feasibility gate.** Considered building Flow 2 via `POST /workflows`. Step 1 investigation confirmed: GET/PATCH on workflows entity is documented for `category=5` (modern cloud flows), but POST creation is undocumented and community-reported as fragile (orphan records, broken connection-reference binding). Stopped per project rule "if blocked or undocumented, fall back". Maker UI used for Flow 2; solution-export-based IaC pipeline added to ROADMAP Phase 5+ as the documented programmatic path.
+- **DEFENSE_BRIEF edit scope-creep self-corrected.** Added an extra explanatory paragraph beyond the user-specified verbatim text; caught and reverted to spec.
+
+### Documentation delivered Day 3 morning
+
+- `ROADMAP.md` — added "Phase 5+ — Solution-export-based flow IaC pipeline" section with trigger, 4-step approach, effort estimate, and Day 3 blocker context.
+- `DEFENSE_BRIEF.md` — added 2026-05-04 "On 'AURUM-PP is IaC' claims" section (hybrid-IaC framing).
+- Memory drift fix — `project_aurum_pp.md` and `project_aurum_pp_resume_next_session.md` updated to reflect new working dir (`~/Projects/AURUM/power-platform/`, not `~/Projects/AURUM-PP/`) and Day 3 phase state.
+
 ## 2026-05-03 — Day 2 wrap (end of day)
 
 End of a long, productive day. Phase 1 → Phase 4 partial. Major project momentum.

@@ -36,3 +36,24 @@ Each fix introduces new fragility. The pattern says PAC's macOS path needed trou
 **Growth path:** when PAC 2.x is fixed upstream, `dotnet tool update -g Microsoft.PowerApps.CLI.Tool` brings PAC back to current. Python + Web API path stays operational throughout — it is the long-term automation layer for table CRUD; PAC is the lifecycle layer.
 
 **Source documents:** `MEMORY/project_aurum_pp_resume_2026_05_02.md` (failure chain, session IDs, exact resume commands), PAC diagnostic log at `/Users/rajaonapple/.dotnet/tools/.store/microsoft.powerapps.cli.tool/2.6.4/microsoft.powerapps.cli.tool/2.6.4/tools/net10.0/any/logs/pac-log.txt`.
+
+---
+
+## 2026-05-04 — On "AURUM-PP is IaC" claims
+
+Honest framing: AURUM-PP today is hybrid IaC.
+- Dataverse schemas: fully API-deployed (`deploy_table.py`, Phase 1 work — see `scripts/deploy_table.py` and `dataverse-schemas/*.yaml`)
+- Sample data: fully API-deployed (`load_sample_data.py`)
+- Cloud flows: built in maker UI (Phase 4 today)
+- Migration path: solution-export pipeline (Phase 5+, documented in ROADMAP)
+
+This is the same maturity ladder enterprise Power Platform shops climb. Not overclaiming.
+
+---
+
+## 2026-05-04 — Day 3 morning talking points (Phase 4 progresses to 2-of-3)
+
+- **Two REFINE flows now demonstrate auto-approval and steward-routing in motion.** Flow 1 picks up high-confidence matches (≥0.85 composite) and promotes staging to SURVIVED automatically. Flow 2 picks up borderline-band matches (0.55 ≤ composite < 0.65) and routes them to STEWARD_REVIEW. The "human-in-the-loop only when needed" pattern is observable end-to-end, not just on paper.
+- **End-to-end latencies 8s and 24s — near-real-time for demo purposes.** Flow 1 trigger-to-update measured at ~8s on the Sarah test; Flow 2 measured at ~24s on the Mohammed test. Both well under the "perceptible-to-a-human" threshold for a steward watching the workbench. (Caveat already in the open-risks brief: Microsoft does not contractually SLA Dataverse-trigger latency — these are empirical, demo-grade observations.)
+- **Flow 3 deferred for architectural correctness, not time pressure.** The remaining flow has a different shape (manual instant trigger + create-row + multi-field map + canonical lookup relink) and warrants fresh focus over a tail-end-of-session build. The defense here is "we sequenced the work for quality, not speed" — and the spec is fully locked in `docs/phase4_flow_specifications.md` ready for the next session.
+- **Hybrid IaC framing already locked yesterday — no edits needed.** The 2026-05-04 IaC section above remains the load-bearing positioning. Day 3 morning's Reality Auditor catch (programmatic POST stopped at the feasibility gate, solution-export pipeline added to ROADMAP) is consistent with that framing.

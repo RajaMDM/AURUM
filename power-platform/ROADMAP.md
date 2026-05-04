@@ -2,35 +2,22 @@
 
 Forward-looking planning doc. Where the project is heading, what's blocked, what triggers the next phase. Companion to `PROJECT_HISTORY.md` (chronological narrative), `TECH_MEMORY.md` (architectural decisions), `CHANGELOG.md` (per-change log), `DEFENSE_BRIEF.md` (defense talking points).
 
-## Phase status (as of 2026-05-03 end-of-day)
+## Phase status (as of 2026-05-04 morning)
 
 | Phase | Status | Description |
 |---|---|---|
 | Phase 1 — schema deploy | ✅ complete | All 5 Dataverse tables deployed via Python+MSAL+Web API. 11 quirks captured. |
 | Phase 2 — sample data load | ✅ complete | 96 demo records inserted with real AURUM matcher integration (commit `78223b64c2bb`). |
 | Phase 3 — model-driven app + steward views | ✅ complete | AURUM Steward Workbench published. 3 Pending Steward Review views built (CRM/ECOMM/LOYALTY). Forms auto-generated, deferred to Phase 5. |
-| Phase 4 — Power Automate flows | 🟡 partial (1 of 3) | Flow 1 (Auto-Approve) built + verified for CRM. Flow 2 + Flow 3 deferred to Day 3. |
-| Phase 5+ | not started | Polish, ECOMM/LOYALTY replication, dashboards. See "Future phases" + deferred backlog below. |
+| Phase 4 — Power Automate flows | 🟡 partial (2 of 3) | Flow 1 (Auto-Approve, ~8s) and Flow 2 (Steward Review, ~24s) both verified for CRM. Flow 3 deferred to Day 4. |
+| Phase 5+ | not started | Polish, ECOMM/LOYALTY replication, dashboards, solution-export IaC pipeline. See "Future phases" + deferred backlog below. |
 
-## Day 3 plan (2026-05-04)
+## Day 4 plan
 
-**Resume signal:** Mohammed CRM record is at `aurum_processing_status = 3` (left over from Day 2 Flow 2 pre-flight test). Building Flow 2 first auto-fires it and flips him back to 5 — using Flow 2's first run as its own test (recommended). Alternative: manually PATCH back to 5 before building.
-
-### Morning push — finish Phase 4
-
-1. **Build Flow 2 — Steward Review Required (CRM)** — spec in `docs/phase4_flow_specifications.md`. Uses Mohammed Al-Rashid (composite=0.60) as live test subject. ~20 min build. Test with `scripts/test_flow2.py`.
-2. **Build Flow 3 — Promote Unmatched to Canonical (CRM)** — manual instant trigger (Option A locked). Test subjects: Hassan Bin Saeed or Joana Reyes (CRM prospects). Field mapping is verbose; trust_score=0.73 formula already verified. ~30 min build.
-3. **End-to-end test all 3 flows** — Flow 1 (Sarah), Flow 2 (Mohammed), Flow 3 (Hassan). Capture demo screenshots at each step.
-
-### Afternoon — GitHub + narrative
-
-4. **`git init` + push AURUM-PP to GitHub** — private until review. Standard `.gitignore` (.venv, __pycache__, token cache outside repo already, sample_data_manifest_*.json optional include). Decision: include manifest? Yes — documents what was inserted, useful for reviewers. Exclude .venv, __pycache__.
-5. **Draft README** — replace existing 60-line README with portfolio-quality version. Reference Bigdata.com / public AURUM lineage / AURUM-PP positioning.
-6. **Draft Medium post** — "AURUM on Power Platform: instantiating an MDM reference architecture in Microsoft's stack." Lean on the Quirk 10 N=4 story + the "matcher as source of truth" discipline.
-
-### Stretch (only if Day 3 has time)
-
-7. Consider Sitemap reorganization into AURUM stage groups (currently in feedback as Phase 5 polish).
+1. **Build Flow 3 — Promote Unmatched to Canonical (CRM)** — manual instant trigger (Option A locked). Test subjects: Hassan Bin Saeed or Joana Reyes (CRM prospects). Field mapping is verbose; trust_score=0.73 formula already verified. **~45–60 min** build.
+2. **Capture screenshots of all 3 flows** for blog/touchpoint use.
+3. **Expand `docs/TOMORROW_TECHNICAL_TOUCHPOINT.md`** from skeleton to full doc — work and students audiences both addressed.
+4. **Optional:** ECOMM/LOYALTY flow replication via solution-export IaC pipeline (Phase 5 work — see below).
 
 ## Deferred backlog (Phase 5 cleanup tomorrow)
 
@@ -98,6 +85,20 @@ Three columns are deployed in env but never populated by the demo data load:
 Quirk 10 captured 3 YAML-vs-env drift cases during table deploy. The 2026-05-03 ghost column added a 4th case (script-vs-env). `verify_env_columns.py` exists for the script side; an analogous YAML-side verification script should exist before any future schema-extension work.
 
 **Trigger:** before authoring Phase 3+ schema additions, OR when adding a 6th table.
+
+## Phase 5+ — Solution-export-based flow IaC pipeline
+
+Trigger to revisit: when ECOMM/LOYALTY flow replication (6 more flows) justifies the upfront cost.
+
+Approach:
+  1. Export AURUM Master Data Management solution as managed .zip via Web API
+  2. Programmatic mutation of Workflows/{guid}.json inside the .zip per flow YAML spec
+  3. Re-import via PAC CLI or solution import API
+  4. Microsoft-documented ALM pattern (defensible IaC story, unlike POST hacks to /workflows)
+
+Estimated effort: 60-90 min for first build (Phase 5 work). Then ~5 min per additional flow.
+
+Verified blocker (Day 3 morning): POST /workflows for category=5 (modern cloud flows) is undocumented and community-reported as fragile. Solution-export pattern is the documented path.
 
 ## Future phases (sketch — not committed)
 
