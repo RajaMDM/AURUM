@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![MCP Compatible](https://img.shields.io/badge/MCP-compatible-blueviolet.svg)](runtimes/mcp/)
-[![Status](https://img.shields.io/badge/status-v0.1.2%20reference-orange.svg)](ROADMAP.md)
+[![Status](https://img.shields.io/badge/status-v0.1.3%20reference-orange.svg)](ROADMAP.md)
 [![Maintained by Raja Shahnawaz Soni](https://img.shields.io/badge/maintained%20by-Raja%20Shahnawaz%20Soni-navy.svg)](https://linkedin.com/in/raja-shahnawaz/)
 
 > **Raw data in. Hallmarked golden records out.**
@@ -100,7 +100,7 @@ Three statuses, no fudge:
 | Employee profiler | ✅ Working | Email, hire-date ISO format, self-manager, status whitelist |
 | Counterparty profiler | ✅ Working | LEI (ISO 17442), role flagging, jurisdiction |
 | DQ rule engine (standalone) | 🔧 Stub | Rules currently embedded in profilers |
-| ML anomaly detector | 📋 Planned | Isolation Forest planned for v0.2.0 |
+| ML anomaly detector | ✅ Working | Isolation Forest with generic per-column feature engineering |
 | LLM rule generator | 📋 Planned | Anthropic API integration planned for v0.2.0 |
 
 ### REFINE — Stage 03
@@ -166,14 +166,18 @@ Three statuses, no fudge:
 
 ---
 
-## AI / ML in v0.1.2 — what's actually there
+## AI / ML in v0.1.3 — what's actually there
 
-The repo claims AI augmentation across stages. In v0.1.2 the *working* AI/ML
+The repo claims AI augmentation across stages. In v0.1.3 the *working* AI/ML
 components are:
 
 - **REFINE classical ML matching** — RapidFuzz token scoring + Jellyfish
   Jaro-Winkler + composite weighting. Deterministic, fast, well-understood.
   Not LLM-based — and that's the right choice for matching at scale.
+- **UNEARTH Isolation Forest anomaly detector** — flags rows whose feature
+  combinations are unlike the rest of the dataset. Generic per-column
+  feature engineering (length, character composition, null state) so it
+  works across all 7 domains without per-domain tuning. Deterministic.
 - **MCP server** — exposes the AURUM pipeline as an MCP-compatible server
   invokable from Claude Code, Cursor, and any Hermes/Nous-based agentic runtime.
 

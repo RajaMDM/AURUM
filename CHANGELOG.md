@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.1.3] — 2026-05-04
+
+### Added
+- **`unearth/anomaly/`** — Isolation Forest anomaly detector with generic
+  per-column feature engineering (length, character composition, null state,
+  row-level empty count). Operates on any CSV across all 7 domains; flags
+  rows whose feature combinations are unlike the rest of the dataset and
+  reports the top three driving features as z-scores. Deterministic via a
+  fixed random seed — same input produces the same output for steward audit.
+- **`tests/test_anomaly.py`** — 6 tests covering outlier flagging,
+  small-dataset tolerance, summary shape, determinism, all-empty column
+  exclusion, and `FlaggedRow` serialization.
+
+### Changed
+- README Component Status table — UNEARTH ML anomaly detector flips from
+  📋 Planned to ✅ Working. The README's "AI/ML actually working" claim
+  now lists Isolation Forest alongside RapidFuzz/Jaro-Winkler.
+
+---
+
 ## [v0.1.2] — 2026-05-04
 
 ### Added
