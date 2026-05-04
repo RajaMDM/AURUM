@@ -49,13 +49,13 @@ For a work audience, the same point lands as a procurement and risk argument: th
 
 | AURUM stage | Stage purpose (per `~/Projects/AURUM/<stage>/__init__.py`) | AURUM-PP realization | Concrete artifact | Status |
 |---|---|---|---|---|
-| **ASSAY** | Ingestion, schema mapping, migration; test the raw ore | `aurum_assay_profile` Dataverse table holds per-field profile output (one row per run × source × field) | `dataverse-schemas/05_aurum_assay_profile.yaml` | Schema deployed, 8 sample rows. **See note below.** |
+| **ASSAY** | Ingestion, schema mapping, migration; test the raw ore | `aurum_assay_profile` Dataverse table holds per-field profile output (one row per run × source × field) | `dataverse-schemas/05_aurum_assay_profile.yaml` | Schema deployed, 8 sample rows. |
 | **UNEARTH** | Profiling, DQ rules, anomaly detection | Three per-source staging tables hold raw extracts with original "dirt" preserved. Each uses a source-native primary attribute (CRM = full-name display, ECOMM = email, LOYALTY = member number) | `dataverse-schemas/02..04` | Deployed. Hero records loaded. |
 | **REFINE** | Blocking, matching, survivorship, golden record | Public AURUM matcher imported at runtime; composite scores written to staging as `aurum_match_confidence`. Two of three Power Automate flows live (auto-approve, steward review). | `scripts/load_sample_data.py:73`; Flow 1 + Flow 2 in `make.powerautomate.com` | Partial — Flow 3 deferred. |
 | **UNFURL** | Publication, APIs, subscriptions; issue the golden record to the world | `aurum_customer` canonical table is the publish target. Power Automate flows write into it after match resolution. Flow 3 (manual create-row promotion) deferred. | `dataverse-schemas/01_aurum_customer_canonical.yaml`; `aurum_customer.aurum_is_golden` | Schema deployed; canonical population partial pending Flow 3. |
 | **MARK** | Reverse integration, lineage, reconciliation; stamp provenance | Phase 4 deliberately leans on Dataverse's built-in audit log rather than building a custom `aurum_mark_lineage_event` table. Every flow run's row update is captured automatically with actor, timestamp, before/after values. | Dataverse system audit (`audit` entity); per-table `is_audit_enabled: true` set in every YAML | Deployed via platform default. Custom MARK table deferred. |
 
-**A definitional honest note worth surfacing.** The AURUM repo's `__init__.py` files place *profiling* under UNEARTH (stage 02), but AURUM-PP names its profile-output table `aurum_assay_profile` and uses the term "ASSAY profiler" in its description. The naming reflects an internal AURUM-PP shorthand where "assay" is read as a verb (to assay = to profile), not strictly as the ingestion-stage label it carries in the parent repo. This is a slippage worth either reconciling (rename to `aurum_unearth_profile` in a future schema revision) or formally documenting as an AURUM-PP-side convention. Flagged here; not silently fixed.
+**On the `aurum_assay_profile` naming convention.** AURUM-PP names its profile-output table `aurum_assay_profile` rather than `aurum_unearth_profile` because in this implementation "assay" is read as a verb — the act of assessing the data — rather than the AURUM stage-01 label. The output of an assay is a profile. Renaming would be a cosmetic change with breakage cost (every script, doc, and view referencing the name) for no architectural improvement. The convention is documented here.
 
 ---
 
@@ -73,7 +73,7 @@ Eleven Dataverse Web API quirks were captured during the deploy and saved to mem
 | `aurum_crm_customer` | CRM Customer (Staging) | UNEARTH | `aurum_full_name_display` (calc field, deferred to maker UI per Quirk 3) | **23** | Source-native primary is the calculated full-name display. |
 | `aurum_ecomm_customer` | E-Commerce Customer (Staging) | UNEARTH | `aurum_email_raw` | **20** | Email is the natural source primary; abbreviated names common (`S. Johnson`). |
 | `aurum_loyalty_customer` | Loyalty Customer (Staging) | UNEARTH | `aurum_loyalty_member_number` | **15** | Names stored in legacy `LAST, FIRST MIDDLE` ALL-CAPS format; `_parsed` columns hold normalized output. |
-| `aurum_assay_profile` | ASSAY Profile Result | ASSAY (or UNEARTH per parent repo) | `aurum_field_name` | **8** | Per-field profiling output. Eight sample rows demonstrate the shape; production runs would emit ~24 rows per profiling pass (8 fields × 3 staging tables). |
+| `aurum_assay_profile` | ASSAY Profile Result | ASSAY | `aurum_field_name` | **8** | Per-field profiling output. Eight sample rows demonstrate the shape; production runs would emit ~24 rows per profiling pass (8 fields × 3 staging tables). |
 
 Counts are verified against `scripts/load_sample_data.py:1697-1709` (filler counts: 26 canonicals, 17 CRM, 17 ECOMM, 12 LOYALTY, 8 assay) plus the five hero patterns producing the additional records. Total: **96 rows**.
 
@@ -214,7 +214,7 @@ ASSAY → UNEARTH → REFINE → UNFURL → MARK is adopted verbatim from AURUM,
 
 `ProcessingStatus`, `MatchMethod`, `AssaySeverity`, `CRMSegment`, `LoyaltyTier`, and `StewardReviewStatus` are all defined in `scripts/load_sample_data.py:157-192`. When Phase 4's flow specifications reference values like "STEWARD_REVIEW = 5" or "MATCHED = 3", they cite these enum classes. This discipline caught a Phase 3 spec-doc bug (`STEWARD_REVIEW` and `SURVIVED` had been swapped in an early spec draft) and a Phase 4 trigger reformulation (the verbal spec said `aurum_processing_status = UNMATCHED (6)`, but value 6 is `REJECTED`; UNMATCHED lives in `MatchMethod`, not `ProcessingStatus`). The pattern is recorded in memory as `feedback_spec_enum_source_of_truth.md`.
 
-The honest framing: this is a single-repository monorepo since 2026-05-04, so "imports from public AURUM" technically means "imports from a sibling subfolder of the same repo." The vendor-neutral claim still holds because the import is across the *implementation boundary* (Python matcher ↔ Power Platform), not across a marketing line. The matcher is unmodified by AURUM-PP; AURUM is unaware of AURUM-PP.
+AURUM-PP and the AURUM matcher live in the same repository (since 2026-05-04) but on opposite sides of the implementation boundary: the matcher is Python under `refine/`; AURUM-PP is Power Platform configuration plus deployment scripts under `power-platform/`. The matcher is imported across that boundary unmodified, with no AURUM-PP-specific code on the matcher side. Co-located, not coupled — the architecture's separation of concerns survives the repo layout.
 
 ---
 
@@ -276,7 +276,6 @@ Listed without softening. Most have explicit "trigger to revisit" entries in `RO
 - **No multi-tenant isolation tested.** AURUM-PP has been deployed and exercised in a single Developer Plan environment.
 - **Connection reference dependency.** Every flow imports `aurum_sharedcommondataserviceforapps_8e3b2`. Environment promotion (dev → test → prod) requires connection re-binding in each target environment.
 - **`aurum_household_head` family deployed but unused.** Three columns sit on canonical and LOYALTY without being populated by the demo data load. Either wire into a future household-grouping demo or remove from env. Surfaced via `docs/env_column_manifest_2026-05-03.md`.
-- **The naming slippage between AURUM's UNEARTH stage and AURUM-PP's `aurum_assay_profile` table** — flagged in section 2 as a real architectural inconsistency to either reconcile via rename or formally document.
 
 ---
 
@@ -334,7 +333,6 @@ This scenario does not fire today. The flow is spec-locked and pending build.
 - Solution-export-based flow IaC pipeline.
 - Anti-match rule landed in AURUM v0.3.0; AURUM-PP regenerates sample data with the "Sarah Chen Dubai" anti-match exemplar.
 - `last_refined_date` sync added to all three Flow 1 instances.
-- The `aurum_assay_profile` naming reconciliation — either rename to align with AURUM's UNEARTH stage label, or document the AURUM-PP-side convention formally.
 
 ---
 
