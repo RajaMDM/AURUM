@@ -47,6 +47,8 @@ For a work audience, the same point lands as a procurement and risk argument: th
 
 ## 2. Five-stage AURUM architecture mapped to Power Platform
 
+> Visual companion: `docs/AURUM_PP_ARCHITECTURE_DIAGRAM.md` (Mermaid flowchart of the same mapping with stage-to-stage data flow, the parent-repo matcher import, and the Steward Workbench consumer relationships).
+
 | AURUM stage | Stage purpose (per `~/Projects/AURUM/<stage>/__init__.py`) | AURUM-PP realization | Concrete artifact | Status |
 |---|---|---|---|---|
 | **ASSAY** | Ingestion, schema mapping, migration; test the raw ore | `aurum_assay_profile` Dataverse table holds per-field profile output (one row per run × source × field) | `dataverse-schemas/05_aurum_assay_profile.yaml` | Schema deployed, 8 sample rows. |
