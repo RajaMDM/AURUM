@@ -107,13 +107,43 @@ This is a teaching moment worth surfacing. An earlier draft of `load_sample_data
 
 Status: **published, On**. Five entity pages (one per Dataverse table). The sitemap was hand-authored as XML (`model-driven-app/sitemap/aurum_steward_workbench_sitemap.xml`) after the maker UI's sitemap designer failed to expose group-create and group-move operations during the build session.
 
-Three custom system views were built — one `Pending Steward Review` view per staging table:
+Three custom system views were built — one `Pending Steward Review` view per staging table. All three share the same shape:
 
-- **CRM**: filter `aurum_processing_status eq 5`, on `aurum_crm_customer`.
-- **ECOMM**: filter `aurum_processing_status eq 5`, on `aurum_ecomm_customer`.
-- **LOYALTY**: filter `aurum_processing_status eq 5`, on `aurum_loyalty_customer` (uses `_parsed` name columns since legacy data is stored in `LAST, FIRST` form).
+| Aspect | Configuration |
+|---|---|
+| Filter | `aurum_processing_status eq 5` |
+| Sort | `aurum_match_confidence` ascending — lowest-confidence (most ambiguous) records surface first, so the steward exercises judgment where it matters most |
+| Source-specific value-indicator column | CRM: `aurum_lifetime_value` (LTV) · ECOMM: total spend · LOYALTY: `aurum_loyalty_tier` |
 
-Verified in `docs/phase3_views_specification.md:75`. Sort and column selections beyond the filter are not separately verified in this document; treat any specific record-count claims for the steward queue as PENDING VERIFICATION until reproduced by querying the env directly.
+Filter verified in `docs/phase3_views_specification.md:75` (FetchXML snippet). LOYALTY uses the `_parsed` name columns because legacy data is stored in `LAST, FIRST MIDDLE` ALL-CAPS form; the parsed columns hold normalized output.
+
+**Steward queue contents at time of verification — queried 2026-05-04 via Dataverse Web API (`aurum_processing_status eq 5`, ordered by `aurum_match_confidence asc`):**
+
+CRM — 4 records on `aurum_crm_customer`:
+
+| Source ID | Name (raw) | Match confidence | Match method |
+|---|---|---:|---|
+| `CRM-00042` | PRIYA KRISHNAMURTHY | 0.51 | FUZZY_BORDERLINE (3) |
+| `CRM-00219` | M. Alrashid | 0.60 | FUZZY_BORDERLINE (3) |
+| `CRM-20000` | Andrea Cruz | 0.71 | FUZZY_BORDERLINE (3) |
+| `CRM-20004` | Tao Wong | 0.71 | FUZZY_BORDERLINE (3) |
+
+ECOMM — 2 records on `aurum_ecomm_customer`:
+
+| Source ID | Name (raw) | Match confidence | Match method |
+|---|---|---:|---|
+| `ECOMM-20000` | Anjali Bhatt | 0.69 | FUZZY_BORDERLINE (3) |
+| `ECOMM-20007` | Wei Li | 0.69 | FUZZY_BORDERLINE (3) |
+
+LOYALTY — 3 records on `aurum_loyalty_customer` (legacy ALL-CAPS source form shown; parsed name in parentheses):
+
+| Member number | Name (legacy / parsed) | Match confidence | Match method |
+|---|---|---:|---|
+| `VLP-455168` | BIN AHMED, YUSUF (Yusuf Bin Ahmed) | 0.69 | FUZZY_BORDERLINE (3) |
+| `VLP-251716` | PETROV, MARCO (Marco Petrov) | 0.71 | FUZZY_BORDERLINE (3) |
+| `VLP-527940` | VILLANUEVA, ANDREA (Andrea Villanueva) | 0.79 | FUZZY_BORDERLINE (3) |
+
+**What the queue tells the demo audience.** Nine borderline-band records, none auto-approved, all surfaced via the matcher's FUZZY_BORDERLINE classification. Confidence values cluster in the 0.51–0.79 band — exactly the territory between the candidate filter (0.55) and the auto-match threshold (0.65) plus the upper-borderline strip up to ~0.85. Mohammed (0.60, CRM-00219) is the canonical Flow 2 test subject. Priya (0.51, CRM-00042) is below the matcher's candidate filter — she shows in the queue because the demo manually set her to STEWARD_REVIEW to illustrate the inter-stage UNEARTH dependency (per `docs/demo_records_aurum_lineage.md`'s Priya hero pattern).
 
 Three honest gaps:
 
