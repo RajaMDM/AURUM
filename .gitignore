@@ -18,3 +18,20 @@ htmlcov/
 .ipynb_checkpoints/
 .patch_backup/
 *.sh
+
+# Claude Code
+.claude/
+
+# IDE
+.idea/
+.vscode/
+
+# AURUM-PP (Power Platform sub-project)
+# MSAL token cache lives at ~/.aurum-pp/ by design; entries below are defensive
+# in case a cache file ever lands inside the working tree.
+.aurum-pp/
+token.json
+*.token
+.msal_cache.bin
+# Sample-data manifest is regeneratable and contains environment-specific GUIDs
+power-platform/scripts/sample_data_manifest_*.json

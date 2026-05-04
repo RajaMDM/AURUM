@@ -1,0 +1,169 @@
+# =============================================================================
+# AURUM-PP — LOYALTY Staging Table
+# =============================================================================
+# Holds raw Loyalty Program extracts. Legacy system — names in
+# "LAST, FIRST MIDDLE" format, often all caps. Older phone formats.
+# Birth year only (privacy practice). Household linkage via member number.
+# =============================================================================
+
+entity:
+  schema_name: aurum_loyalty_customer
+  display_name: "Loyalty Customer (Staging)"
+  display_collection_name: "Loyalty Customers"
+  description: "Staging area for Loyalty Program records. Legacy formats: name as 'LAST, FIRST MIDDLE', frequently all caps. Phone in older national formats. Email may be absent for older members. Household linkage via household_head_member_number."
+  ownership_type: UserOwned
+  is_audit_enabled: true
+  primary_name_attribute: aurum_loyalty_member_number
+
+columns:
+  - schema_name: aurum_loyalty_customerid
+    display_name: "Record ID"
+    type: Uniqueidentifier
+    is_primary_key: true
+
+  - schema_name: aurum_loyalty_member_number
+    display_name: "Member Number"
+    type: SingleLineOfText
+    max_length: 50
+    required: true
+    description: "Stable in source: LP-XXXXXX format."
+
+  - schema_name: aurum_full_name_legacy
+    display_name: "Full Name (Legacy Format)"
+    type: SingleLineOfText
+    max_length: 200
+    description: "Source format: 'LAST, FIRST MIDDLE'. Often ALL CAPS. UNEARTH parses this into separate fields during processing."
+
+  # Parsed names — populated by UNEARTH flow, not from source directly
+  - schema_name: aurum_first_name_parsed
+    display_name: "First Name (Parsed)"
+    type: SingleLineOfText
+    max_length: 100
+    description: "Extracted from full_name_legacy by UNEARTH flow."
+
+  - schema_name: aurum_middle_name_parsed
+    display_name: "Middle Name (Parsed)"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_last_name_parsed
+    display_name: "Last Name (Parsed)"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_email_raw
+    display_name: "Email (Raw)"
+    type: SingleLineOfText
+    format: Email
+    max_length: 320
+    description: "May be empty — older members enrolled via paper without email."
+
+  - schema_name: aurum_phone_raw
+    display_name: "Phone (Raw)"
+    type: SingleLineOfText
+    max_length: 50
+    description: "Legacy formats: 0501234567, (50) 123-4567, 50-123-4567."
+
+  - schema_name: aurum_address_line1_raw
+    display_name: "Address Line 1 (Raw)"
+    type: SingleLineOfText
+    max_length: 200
+    description: "Often ALL CAPS in source."
+
+  - schema_name: aurum_city_raw
+    display_name: "City (Raw)"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_country_raw
+    display_name: "Country (Raw)"
+    type: SingleLineOfText
+    max_length: 100
+
+  # Demographic — birth year only (privacy practice in loyalty programs)
+  - schema_name: aurum_birth_year
+    display_name: "Birth Year"
+    type: WholeNumber
+    min_value: 1900
+    max_value: 2025
+
+  # Loyalty-specific attributes
+  - schema_name: aurum_loyalty_tier
+    display_name: "Tier"
+    type: SingleLineOfText
+    max_length: 50
+    description: "Raw value: may be 'GOLD', 'Gold', or 'gold'. Standardized to canonical tier on REFINE."
+
+  - schema_name: aurum_loyalty_points_balance
+    display_name: "Points Balance"
+    type: WholeNumber
+
+  - schema_name: aurum_loyalty_member_since
+    display_name: "Member Since"
+    type: DateOnly
+
+  - schema_name: aurum_household_head_member_number
+    display_name: "Household Head Member Number"
+    type: SingleLineOfText
+    max_length: 50
+    description: "Self-reference to another LP-XXXXXX. Empty if this member is the head or unaffiliated."
+
+  # Lineage to canonical
+  - schema_name: aurum_canonical_customer
+    display_name: "Canonical Customer"
+    type: Lookup
+    target_entity: aurum_customer
+
+  - schema_name: aurum_match_confidence
+    display_name: "Match Confidence"
+    type: Decimal
+    min: 0
+    max: 1
+    precision: 4
+
+  - schema_name: aurum_match_method
+    display_name: "Match Method"
+    type: OptionSet
+    options:
+      - { value: 1, label: "Exact-Match (email or phone)" }
+      - { value: 2, label: "Fuzzy-High-Confidence" }
+      - { value: 3, label: "Fuzzy-Borderline" }
+      - { value: 4, label: "Steward-Approved" }
+      - { value: 5, label: "Unmatched" }
+      - { value: 6, label: "Single-Source Promotion" }
+
+  # Operational
+  - schema_name: aurum_loaded_date
+    display_name: "Loaded Date"
+    type: DateAndTime
+
+  - schema_name: aurum_processing_status
+    display_name: "Processing Status"
+    type: OptionSet
+    options:
+      - { value: 1, label: "Loaded" }
+      - { value: 2, label: "Parsed (Names Extracted)" }
+      - { value: 3, label: "Matched" }
+      - { value: 4, label: "Survived to Golden" }
+      - { value: 5, label: "Steward Review Required" }
+      - { value: 6, label: "Rejected" }
+
+views:
+  - name: "All Loyalty Records"
+    columns: [aurum_loyalty_member_number, aurum_full_name_legacy, aurum_loyalty_tier, aurum_processing_status, aurum_canonical_customer]
+
+  - name: "Loyalty without Email (Identity Risk)"
+    filter: "aurum_email_raw eq null"
+    columns: [aurum_loyalty_member_number, aurum_full_name_legacy, aurum_phone_raw, aurum_loyalty_tier]
+    description: "Older members with no email — only identifiable by name + phone."
+
+  - name: "Loyalty Households"
+    filter: "aurum_household_head_member_number ne null"
+    columns: [aurum_loyalty_member_number, aurum_full_name_legacy, aurum_household_head_member_number]
+    sort: aurum_household_head_member_number ASC
+    description: "Members linked to a household head. Used by hierarchy viewer canvas app."
+
+  - name: "Premium Tier Members"
+    filter: "aurum_loyalty_tier eq 'PLATINUM' or aurum_loyalty_tier eq 'GOLD'"
+    columns: [aurum_loyalty_member_number, aurum_full_name_legacy, aurum_loyalty_tier, aurum_loyalty_points_balance]
+    sort: aurum_loyalty_points_balance DESC

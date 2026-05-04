@@ -1,0 +1,171 @@
+# =============================================================================
+# AURUM-PP — Phase 2: ASSAY Profile Results Table
+# =============================================================================
+# Per-field profile output. One row per (run, source_table, field).
+# A profiling run that profiles all 3 staging tables produces ~24 rows
+# (CRM 8 fields + ECOMM 8 fields + LOYALTY 8 fields).
+#
+# Stewards browse this table to understand "what's actually in the data"
+# before REFINE runs. Bad data in source = bad golden records out.
+# =============================================================================
+
+entity:
+  schema_name: aurum_assay_profile
+  display_name: "ASSAY Profile Result"
+  display_collection_name: "ASSAY Profile Results"
+  description: "Per-field profiling output produced by the ASSAY profiler flow. Each row captures a single field's null rate, distinct values, format anomalies, and severity."
+  ownership_type: UserOwned
+  is_audit_enabled: true
+  primary_name_attribute: aurum_field_name
+
+columns:
+  - schema_name: aurum_assay_profileid
+    display_name: "Profile ID"
+    type: Uniqueidentifier
+    is_primary_key: true
+
+  - schema_name: aurum_run_id
+    display_name: "Run ID"
+    type: SingleLineOfText
+    max_length: 50
+    description: "GUID linking all rows in a single profiling run."
+    required: true
+
+  - schema_name: aurum_run_timestamp
+    display_name: "Run Timestamp"
+    type: DateAndTime
+    required: true
+    description: "When the profiling run started."
+
+  - schema_name: aurum_source_table
+    display_name: "Source Table"
+    type: OptionSet
+    options:
+      - { value: 1, label: "CRM Staging" }
+      - { value: 2, label: "ECOMM Staging" }
+      - { value: 3, label: "LOYALTY Staging" }
+      - { value: 4, label: "Customer (Golden Record)" }
+    required: true
+
+  - schema_name: aurum_field_name
+    display_name: "Field Name"
+    type: SingleLineOfText
+    max_length: 100
+    required: true
+    description: "Logical column being profiled (e.g. 'first_name_raw')."
+
+  - schema_name: aurum_total_rows
+    display_name: "Total Rows"
+    type: WholeNumber
+    description: "Number of records in the source table at profile time."
+
+  - schema_name: aurum_null_count
+    display_name: "Null Count"
+    type: WholeNumber
+    description: "Number of records where this field is empty or whitespace-only."
+
+  - schema_name: aurum_null_pct
+    display_name: "Null %"
+    type: Decimal
+    precision: 1
+    min_value: 0
+    max_value: 100
+    description: "Percentage of records where the field is empty."
+
+  - schema_name: aurum_distinct_values
+    display_name: "Distinct Values"
+    type: WholeNumber
+    description: "Count of unique non-empty values for this field."
+
+  - schema_name: aurum_inferred_type
+    display_name: "Inferred Type"
+    type: OptionSet
+    options:
+      - { value: 1, label: "Text" }
+      - { value: 2, label: "Email" }
+      - { value: 3, label: "Phone" }
+      - { value: 4, label: "Date" }
+      - { value: 5, label: "Numeric" }
+      - { value: 6, label: "Empty" }
+    description: "Detected type via majority pattern match (>50%)."
+
+  - schema_name: aurum_format_anomaly_count
+    display_name: "Format Anomalies"
+    type: WholeNumber
+    description: "Records where the value does NOT match the inferred type pattern."
+
+  - schema_name: aurum_format_anomaly_pct
+    display_name: "Format Anomaly %"
+    type: Decimal
+    precision: 1
+    min_value: 0
+    max_value: 100
+
+  - schema_name: aurum_max_length
+    display_name: "Max Length"
+    type: WholeNumber
+
+  - schema_name: aurum_min_length
+    display_name: "Min Length"
+    type: WholeNumber
+
+  - schema_name: aurum_sample_value_1
+    display_name: "Sample Value 1"
+    type: SingleLineOfText
+    max_length: 250
+    description: "First non-null sample value, for steward inspection."
+
+  - schema_name: aurum_sample_value_2
+    display_name: "Sample Value 2"
+    type: SingleLineOfText
+    max_length: 250
+
+  - schema_name: aurum_sample_value_3
+    display_name: "Sample Value 3"
+    type: SingleLineOfText
+    max_length: 250
+
+  - schema_name: aurum_severity
+    display_name: "Severity"
+    type: OptionSet
+    options:
+      - { value: 1, label: "OK" }
+      - { value: 2, label: "Warning" }
+      - { value: 3, label: "Critical" }
+    description: |
+      Severity rules applied at write time:
+        - Critical: null_pct >= 50 OR format_anomaly_pct >= 30
+        - Warning:  null_pct >= 20 OR format_anomaly_pct >= 10
+        - OK:       all thresholds within healthy range
+
+views:
+  - name: "Latest Run — All Fields"
+    description: "Default landing view: most recent run, sorted by severity then null %"
+    sort: [aurum_severity DESC, aurum_null_pct DESC]
+    columns: [aurum_source_table, aurum_field_name, aurum_inferred_type, aurum_null_pct, aurum_distinct_values, aurum_format_anomaly_pct, aurum_severity]
+
+  - name: "Critical Findings Only"
+    filter: "aurum_severity eq 3"
+    columns: [aurum_source_table, aurum_field_name, aurum_null_pct, aurum_format_anomaly_pct, aurum_sample_value_1]
+
+  - name: "By Source Table"
+    description: "Group by source_table to see per-source quality"
+    sort: [aurum_source_table ASC, aurum_field_name ASC]
+
+  - name: "Run History"
+    description: "All runs, newest first — for trending"
+    sort: [aurum_run_timestamp DESC]
+    columns: [aurum_run_timestamp, aurum_source_table, aurum_field_name, aurum_severity, aurum_null_pct]
+
+charts:
+  - name: "Null % by Field"
+    type: bar
+    series: aurum_null_pct
+    category: aurum_field_name
+    legend_grouping: aurum_source_table
+
+  - name: "Severity Distribution by Source"
+    type: stacked_bar
+    series: count
+    category: aurum_source_table
+    legend_grouping: aurum_severity

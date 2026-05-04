@@ -1,0 +1,144 @@
+# =============================================================================
+# AURUM-PP — ECOMM Staging Table
+# =============================================================================
+# Holds raw E-Commerce platform extracts. Email is the natural primary key
+# in the source. Customers may have abbreviated names and may be missing
+# phone numbers entirely.
+# =============================================================================
+
+entity:
+  schema_name: aurum_ecomm_customer
+  display_name: "E-Commerce Customer (Staging)"
+  display_collection_name: "E-Commerce Customers"
+  description: "Staging area for E-Commerce platform records. Email is the natural primary key in the source. Names are often abbreviated (S. Johnson, J. Smith). Phone is frequently missing."
+  ownership_type: UserOwned
+  is_audit_enabled: true
+  primary_name_attribute: aurum_email_raw
+
+columns:
+  - schema_name: aurum_ecomm_customerid
+    display_name: "Record ID"
+    type: Uniqueidentifier
+    is_primary_key: true
+
+  - schema_name: aurum_ecomm_source_id
+    display_name: "ECOMM Source ID"
+    type: SingleLineOfText
+    max_length: 50
+    required: true
+
+  - schema_name: aurum_email_raw
+    display_name: "Email (Raw)"
+    type: SingleLineOfText
+    format: Email
+    max_length: 320
+    required: true
+    description: "Natural primary key in source. Always lowercase in ECOMM."
+
+  - schema_name: aurum_first_name_raw
+    display_name: "First Name (Raw)"
+    type: SingleLineOfText
+    max_length: 100
+    description: "Often abbreviated to initial: 'S.', 'J.', 'A.'. Sometimes only an initial without a period."
+
+  - schema_name: aurum_last_name_raw
+    display_name: "Last Name (Raw)"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_phone_raw
+    display_name: "Phone (Raw)"
+    type: SingleLineOfText
+    max_length: 50
+    description: "Optional. ~30% of ECOMM records have no phone."
+
+  # Default shipping is stored on the customer; multiple shipping addresses
+  # would be modeled as a child entity in production.
+  - schema_name: aurum_default_shipping_line1
+    display_name: "Default Shipping Line 1"
+    type: SingleLineOfText
+    max_length: 200
+
+  - schema_name: aurum_default_shipping_city
+    display_name: "Default Shipping City"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_default_shipping_country
+    display_name: "Default Shipping Country"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_default_shipping_postal
+    display_name: "Default Shipping Postal Code"
+    type: SingleLineOfText
+    max_length: 20
+
+  # ECOMM-specific commercial attributes
+  - schema_name: aurum_ecomm_total_orders
+    display_name: "Total Orders"
+    type: WholeNumber
+
+  - schema_name: aurum_ecomm_total_spend
+    display_name: "Total Spend"
+    type: Currency
+
+  - schema_name: aurum_ecomm_first_order_date
+    display_name: "First Order Date"
+    type: DateOnly
+
+  - schema_name: aurum_ecomm_last_order_date
+    display_name: "Last Order Date"
+    type: DateOnly
+
+  # Lineage to canonical
+  - schema_name: aurum_canonical_customer
+    display_name: "Canonical Customer"
+    type: Lookup
+    target_entity: aurum_customer
+
+  - schema_name: aurum_match_confidence
+    display_name: "Match Confidence"
+    type: Decimal
+    min: 0
+    max: 1
+    precision: 4
+
+  - schema_name: aurum_match_method
+    display_name: "Match Method"
+    type: OptionSet
+    options:
+      - { value: 1, label: "Exact-Match (email)" }
+      - { value: 2, label: "Fuzzy-High-Confidence" }
+      - { value: 3, label: "Fuzzy-Borderline" }
+      - { value: 4, label: "Steward-Approved" }
+      - { value: 5, label: "Unmatched" }
+
+  # Operational
+  - schema_name: aurum_loaded_date
+    display_name: "Loaded Date"
+    type: DateAndTime
+
+  - schema_name: aurum_processing_status
+    display_name: "Processing Status"
+    type: OptionSet
+    options:
+      - { value: 1, label: "Loaded" }
+      - { value: 2, label: "Profiled" }
+      - { value: 3, label: "Matched" }
+      - { value: 4, label: "Survived to Golden" }
+      - { value: 5, label: "Steward Review Required" }
+      - { value: 6, label: "Rejected" }
+
+views:
+  - name: "All ECOMM Records"
+    columns: [aurum_ecomm_source_id, aurum_email_raw, aurum_first_name_raw, aurum_last_name_raw, aurum_processing_status, aurum_canonical_customer]
+
+  - name: "ECOMM with Email Only (Identity Risk)"
+    filter: "aurum_phone_raw eq null and aurum_first_name_raw eq null"
+    columns: [aurum_ecomm_source_id, aurum_email_raw, aurum_default_shipping_city]
+    description: "Records where the only identifier is the email. High-risk for identity resolution."
+
+  - name: "Unmatched ECOMM Records"
+    filter: "aurum_canonical_customer eq null and aurum_processing_status ne 6"
+    columns: [aurum_ecomm_source_id, aurum_email_raw, aurum_first_name_raw, aurum_last_name_raw]

@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<SiteMap>
+  <Area Id="Area_AurumWorkbench" ShowGroups="true" Title="AURUM Steward Workbench">
+    <Group Id="Group_ASSAY" Title="📥 ASSAY (Profiling)">
+      <SubArea Id="SubArea_Assay_Findings" Title="Data Quality Findings" Entity="aurum_assay_profile"/>
+    </Group>
+    <Group Id="Group_UNEARTH" Title="🔍 UNEARTH (Staging)">
+      <SubArea Id="SubArea_Unearth_CRM" Title="CRM Records" Entity="aurum_crm_customer"/>
+      <SubArea Id="SubArea_Unearth_ECOMM" Title="E-commerce Records" Entity="aurum_ecomm_customer"/>
+      <SubArea Id="SubArea_Unearth_LOYALTY" Title="Loyalty Records" Entity="aurum_loyalty_customer"/>
+    </Group>
+    <Group Id="Group_REFINE" Title="⚖️ REFINE (Matching)">
+      <SubArea Id="SubArea_Refine_PendingReview" Title="Pending Steward Review" Entity="aurum_crm_customer"/>
+      <SubArea Id="SubArea_Refine_AutoApproved" Title="Auto-Approved Matches" Entity="aurum_crm_customer"/>
+      <SubArea Id="SubArea_Refine_Unmatched" Title="Unmatched Records" Entity="aurum_crm_customer"/>
+    </Group>
+    <Group Id="Group_UNFURL" Title="🌟 UNFURL (Canonical)">
+      <SubArea Id="SubArea_Unfurl_Customer" Title="Customer Master" Entity="aurum_customer"/>
+    </Group>
+    <Group Id="Group_Dashboards" Title="📊 Dashboards">
+      <SubArea Id="SubArea_Dashboard_Operations" Title="AURUM-PP Operations Dashboard"/>
+    </Group>
+  </Area>
+</SiteMap>

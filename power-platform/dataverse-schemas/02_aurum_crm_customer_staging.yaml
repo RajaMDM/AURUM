@@ -1,0 +1,150 @@
+# =============================================================================
+# AURUM-PP — CRM Staging Table
+# =============================================================================
+# Holds raw CRM extracts before AURUM processing. Each record represents
+# one row from the CRM source system, preserved with original dirt.
+#
+# REFINE matches records from this staging table against ECOMM and LOYALTY
+# staging tables, then promotes survivors into aurum_customer.
+# =============================================================================
+
+entity:
+  schema_name: aurum_crm_customer
+  display_name: "CRM Customer (Staging)"
+  display_collection_name: "CRM Customers"
+  description: "Staging area for CRM source system records. Holds raw data with original dirt before AURUM standardization. The aurum_canonical_customer lookup is populated by REFINE after match resolution."
+  ownership_type: UserOwned
+  is_audit_enabled: true
+  primary_name_attribute: aurum_full_name_display
+
+columns:
+  - schema_name: aurum_crm_customerid
+    display_name: "Record ID"
+    type: Uniqueidentifier
+    is_primary_key: true
+
+  - schema_name: aurum_crm_source_id
+    display_name: "CRM Source ID"
+    type: SingleLineOfText
+    max_length: 50
+    description: "Original CRM customer ID (e.g. CRM-00001). Stable in source."
+    required: true
+
+  - schema_name: aurum_first_name_raw
+    display_name: "First Name (Raw)"
+    type: SingleLineOfText
+    max_length: 100
+    description: "As loaded — may contain casing variations, trailing whitespace, etc."
+
+  - schema_name: aurum_last_name_raw
+    display_name: "Last Name (Raw)"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_full_name_display
+    display_name: "Full Name"
+    type: CalculatedField
+    calculated_formula: "concat(aurum_first_name_raw, ' ', aurum_last_name_raw)"
+
+  - schema_name: aurum_email_raw
+    display_name: "Email (Raw)"
+    type: SingleLineOfText
+    format: Email
+    max_length: 320
+
+  - schema_name: aurum_phone_raw
+    display_name: "Phone (Raw)"
+    type: SingleLineOfText
+    max_length: 50
+    description: "Variable formats: +971-50-XXX, 050XXX, 00971XXX, etc."
+
+  - schema_name: aurum_address_line1_raw
+    display_name: "Address Line 1 (Raw)"
+    type: SingleLineOfText
+    max_length: 200
+    description: "May be empty for partial-address CRM records."
+
+  - schema_name: aurum_city_raw
+    display_name: "City (Raw)"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_country_raw
+    display_name: "Country (Raw)"
+    type: SingleLineOfText
+    max_length: 100
+
+  # CRM-specific commercial attributes
+  - schema_name: aurum_crm_segment
+    display_name: "Segment"
+    type: SingleLineOfText
+    max_length: 50
+
+  - schema_name: aurum_crm_lifetime_value
+    display_name: "Lifetime Value"
+    type: Currency
+
+  - schema_name: aurum_crm_acquisition_channel
+    display_name: "Acquisition Channel"
+    type: SingleLineOfText
+    max_length: 100
+
+  - schema_name: aurum_crm_last_interaction_date
+    display_name: "Last Interaction"
+    type: DateOnly
+
+  # Lineage to canonical
+  - schema_name: aurum_canonical_customer
+    display_name: "Canonical Customer"
+    type: Lookup
+    target_entity: aurum_customer
+    description: "Populated by REFINE after match resolution. Null = not yet resolved."
+
+  - schema_name: aurum_match_confidence
+    display_name: "Match Confidence"
+    type: Decimal
+    min: 0
+    max: 1
+    precision: 4
+    description: "Composite match score that linked this record to the canonical customer."
+
+  - schema_name: aurum_match_method
+    display_name: "Match Method"
+    type: OptionSet
+    options:
+      - { value: 1, label: "Exact-Match (email or phone)" }
+      - { value: 2, label: "Fuzzy-High-Confidence (>=0.85)" }
+      - { value: 3, label: "Fuzzy-Borderline (0.65-0.85)" }
+      - { value: 4, label: "Steward-Approved" }
+      - { value: 5, label: "Unmatched" }
+
+  # Operational
+  - schema_name: aurum_loaded_date
+    display_name: "Loaded Date"
+    type: DateAndTime
+    description: "When this record was ingested from CRM."
+
+  - schema_name: aurum_processing_status
+    display_name: "Processing Status"
+    type: OptionSet
+    options:
+      - { value: 1, label: "Loaded" }
+      - { value: 2, label: "Profiled (UNEARTH)" }
+      - { value: 3, label: "Matched (REFINE)" }
+      - { value: 4, label: "Survived to Golden" }
+      - { value: 5, label: "Steward Review Required" }
+      - { value: 6, label: "Rejected" }
+
+views:
+  - name: "All CRM Records"
+    columns: [aurum_crm_source_id, aurum_full_name_display, aurum_email_raw, aurum_processing_status, aurum_canonical_customer]
+
+  - name: "Unmatched CRM Records"
+    filter: "aurum_canonical_customer eq null and aurum_processing_status ne 6"
+    columns: [aurum_crm_source_id, aurum_full_name_display, aurum_email_raw, aurum_phone_raw, aurum_loaded_date]
+    sort: aurum_loaded_date DESC
+
+  - name: "CRM Records Needing Steward Review"
+    filter: "aurum_processing_status eq 5"
+    columns: [aurum_crm_source_id, aurum_full_name_display, aurum_match_confidence, aurum_match_method]
+    sort: aurum_match_confidence DESC
