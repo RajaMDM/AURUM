@@ -42,6 +42,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Documentation
 - Each profiler carries a docstring listing the columns it expects and the
   rules it enforces — readable as the spec for that domain's DQ baseline.
+- **`docs/architecture/ai-strategy.md`** added — defends where AURUM uses
+  LLMs (rule authoring, borderline match adjudication, anomaly explanation,
+  steward summaries) versus where it deliberately doesn't (matching at
+  scale, survivorship, threshold setting, anomaly detection itself).
+  Closes the README cross-reference that previously pointed at a planned
+  document.
 
 ---
 

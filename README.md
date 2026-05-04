@@ -181,7 +181,6 @@ LLM-based components (rule generation, anomaly explanation, match tiebreakers)
 are designed and scaffolded but **not yet implemented**. They land in v0.2.0.
 The architectural choice — where LLMs add value vs. where they add risk in MDM
 — is documented in [`docs/architecture/ai-strategy.md`](docs/architecture/ai-strategy.md).
-*(Doc itself: 📋 planned — to be written with v0.2.0.)*
 
 ---
 
