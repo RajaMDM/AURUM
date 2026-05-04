@@ -6,6 +6,20 @@ links here for any item marked 📋.
 
 ---
 
+## v0.1.2 — Released
+
+Per-domain depth pulled forward from v0.3.0 — all 7 profilers now ship
+working with a full unit-test suite.
+
+**What landed:**
+- UNEARTH: Product, Vendor, Asset, Location, Employee, Counterparty
+  profilers (each with domain-specific rules)
+- 16-test unit suite under `tests/test_profilers.py`
+- README Component Status table updated to reflect 7 ✅ working profilers
+- Repo ABOUT section completed (description, topics, homepage)
+
+---
+
 ## v0.1.1 — Released
 
 The first defensible reference. Architecturally complete pipeline with one
@@ -75,12 +89,14 @@ Either (a) external interest signal — first 5 stars or first issue — or
 
 ## v0.3.0 — Per-domain depth
 
-Once v0.2.0 ships, the next investment is depth across the other 6 domains.
+Profilers landed early in v0.1.2; the remaining v0.3.0 investment is
+*matchers* — the harder per-domain problem.
 
-- Profilers for Product, Vendor, Asset, Location, Employee, Counterparty
 - Domain-specific matchers (Product needs SKU normalization; Vendor needs
   legal entity disambiguation; Asset needs lifecycle-aware matching)
 - Domain-specific Dataverse schemas with relationships
+- Sample data generators for Vendor, Employee, and Counterparty
+  (Customer/Product/Asset/Location already covered)
 
 ---
 

@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![MCP Compatible](https://img.shields.io/badge/MCP-compatible-blueviolet.svg)](runtimes/mcp/)
-[![Status](https://img.shields.io/badge/status-v0.1.1%20reference-orange.svg)](ROADMAP.md)
+[![Status](https://img.shields.io/badge/status-v0.1.2%20reference-orange.svg)](ROADMAP.md)
 [![Maintained by Raja Shahnawaz Soni](https://img.shields.io/badge/maintained%20by-Raja%20Shahnawaz%20Soni-navy.svg)](https://linkedin.com/in/raja-shahnawaz/)
 
 > **Raw data in. Hallmarked golden records out.**
@@ -65,9 +65,10 @@ Source Systems
 | **Employee** | Org hierarchy changes, multi-role assignments |
 | **Counterparty** | Dual role (vendor + customer), legal entity identifiers |
 
-> Note: Sample data and the `Customer` profiler are fully implemented in v0.1.1.
-> Other domains have schema/model definitions; per-domain profilers and
-> matchers are on the v0.2.0 roadmap.
+> Note: All 7 domain profilers ship working in v0.1.2. Sample data covers
+> Customer, Product, Asset, and Location end-to-end. Domain-specific matchers
+> (SKU normalization, legal-entity disambiguation, lifecycle-aware matching)
+> remain on the v0.3.0 roadmap.
 
 ---
 
@@ -92,7 +93,12 @@ Three statuses, no fudge:
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Customer profiler | ✅ Working | Completeness, format, consistency rules |
-| Profilers for the other 6 domains | 📋 Planned | Customer is the reference pattern |
+| Product profiler | ✅ Working | SKU, barcode (EAN/UPC/GTIN), UOM whitelist, brand/name casing |
+| Vendor profiler | ✅ Working | Tax ID, country, legal-vs-trading name, self-parent |
+| Asset profiler | ✅ Working | Tag format, lifecycle whitelist, orphan detection |
+| Location profiler | ✅ Working | Lat/lon range, Null Island detector, self-parent |
+| Employee profiler | ✅ Working | Email, hire-date ISO format, self-manager, status whitelist |
+| Counterparty profiler | ✅ Working | LEI (ISO 17442), role flagging, jurisdiction |
 | DQ rule engine (standalone) | 🔧 Stub | Rules currently embedded in profilers |
 | ML anomaly detector | 📋 Planned | Isolation Forest planned for v0.2.0 |
 | LLM rule generator | 📋 Planned | Anthropic API integration planned for v0.2.0 |
@@ -160,9 +166,9 @@ Three statuses, no fudge:
 
 ---
 
-## AI / ML in v0.1.1 — what's actually there
+## AI / ML in v0.1.2 — what's actually there
 
-The repo claims AI augmentation across stages. In v0.1.1 the *working* AI/ML
+The repo claims AI augmentation across stages. In v0.1.2 the *working* AI/ML
 components are:
 
 - **REFINE classical ML matching** — RapidFuzz token scoring + Jellyfish
@@ -236,7 +242,8 @@ Compatible with Claude Code, Cursor, Hermes/Nous, and any MCP-compliant runtime.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). High-priority contributions for v0.2.0:
 
-- Per-domain profilers (Product, Vendor, Asset, Location, Employee, Counterparty)
+- Domain-specific matchers (Product SKU normalization, Vendor legal-entity
+  disambiguation, Asset lifecycle-aware matching)
 - LLM rule generator for UNEARTH
 - ML anomaly detector for UNEARTH
 - Reverse sync engine for MARK

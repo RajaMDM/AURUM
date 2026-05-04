@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.1.2] — 2026-05-04
+
+### Added
+- **All 7 domain profilers ship working.** Previously only Customer was
+  implemented; Product, Vendor, Asset, Location, Employee, and Counterparty
+  now have production-ready profilers in `unearth/profiler/domain_profiler.py`.
+- **Domain-specific DQ rules** per profiler:
+  - **Product** — SKU format, barcode (EAN-8/UPC/EAN-13/GTIN-14), UOM whitelist,
+    brand/name casing.
+  - **Vendor** — tax ID format, country format, legal-vs-trading name identity
+    check, self-parent cycle detection.
+  - **Asset** — tag format, lifecycle whitelist (active/maintenance/retired/etc.),
+    orphan detection (neither located nor assigned).
+  - **Location** — latitude/longitude range checks, Null Island (0,0)
+    placeholder detection, self-parent cycle detection.
+  - **Employee** — email format, hire-date ISO 8601 enforcement, self-manager
+    cycle detection, status whitelist.
+  - **Counterparty** — LEI format (ISO 17442 — 20 alphanumeric chars),
+    role flagging (must be customer or vendor), jurisdiction completeness.
+- **Test suite** under `tests/test_profilers.py` — 16 unit tests covering
+  rule firing, clean-data acceptance, summary shape, and empty-file
+  tolerance for all 7 profilers. CI runs them on every push.
+- `tests/conftest.py` — pytest path setup so the suite runs from the repo
+  root without requiring an editable install.
+
+### Changed
+- README Component Status table updated — UNEARTH stage now shows seven
+  ✅ Working profilers instead of one ✅ + six 📋. The "no overpromises"
+  pledge stays honest.
+- ROADMAP v0.3.0 entry rewritten — per-domain *matchers* remain the next
+  investment, since profilers landed early.
+
+### Documentation
+- Each profiler carries a docstring listing the columns it expects and the
+  rules it enforces — readable as the spec for that domain's DQ baseline.
+
+---
+
 ## [v0.1.1] — 2026-05-02
 
 ### Changed
