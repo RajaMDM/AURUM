@@ -13,7 +13,7 @@ Master Data Management is a 20-year-old discipline. The textbooks haven't change
 
 And yet, the world the data practitioner walks into every morning has changed — dramatically, irreversibly, and faster than any of us expected.
 
-In 2024, a junior data analyst can ask an AI to write her a data quality rule in plain English — and get working Python code in 4 seconds. A data steward can describe a matching edge case in a Slack message — and have it resolved by an agent before she finishes her coffee. A CEO can ask "what is our total exposure to Majid Al Futtaim across all roles?" — and get a structured answer from an AI that queried five systems, resolved the entity across three domains, and calculated the net position — without a single human writing a SQL join.
+In 2024, a junior data analyst can ask an AI to write her a data quality rule in plain English — and get working Python code in 4 seconds. A data steward can describe a matching edge case in a Slack message — and have it resolved by an agent before she finishes her coffee. A CEO can ask "what is our total exposure to Apex Group across all roles?" — and get a structured answer from an AI that queried five systems, resolved the entity across three domains, and calculated the net position — without a single human writing a SQL join.
 
 This document is not about MDM.
 
@@ -247,7 +247,7 @@ These are deterministic transformations. An AI doesn't add value here — but it
 
 For these, AURUM — or Hermes acting as the team lead — presents the decision pre-packaged:
 
-> *"I'm proposing to merge VEND-00101 (AlBaraka Electronics) and VEND-00102 (Al Baraka Electronics LLC) into GLD-VEND-00101. Confidence: 87%. Match basis: TRN prefix match + name similarity 0.92 + same city. Note: different bank accounts — requires your confirmation before financial records are linked. [Approve] [Reject] [Investigate]"*
+> *"I'm proposing to merge VEND-00101 (Al Zafra Electronics) and VEND-00102 (Al Zafra Electronics LLC) into GLD-VEND-00101. Confidence: 87%. Match basis: TRN prefix match + name similarity 0.92 + same city. Note: different bank accounts — requires your confirmation before financial records are linked. [Approve] [Reject] [Investigate]"*
 
 One button. Thirty seconds of steward attention. The AI did the analysis. The human made the call.
 
@@ -312,7 +312,7 @@ The LLM rule generator produces code. But the steward must review it. The AI can
 When CRM says Gold tier and ECOMM says Silver tier, AURUM can apply source trust weights — but those weights were configured by a human who decided that CRM is the system of record for loyalty. The AI enforces policy. It doesn't set it.
 
 **Hierarchy is still a governance decision.**
-Whether Standard Chartered PLC's UAE operation is a branch or a separate legal entity for exposure calculation purposes — that is a Basel III interpretation question. Nadia and Tariq make that call. AURUM records it, enforces it, and audits it. But it does not make it.
+Whether Meridian Bank PLC's UAE operation is a branch or a separate legal entity for exposure calculation purposes — that is a Basel III interpretation question. Nadia and Tariq make that call. AURUM records it, enforces it, and audits it. But it does not make it.
 
 **High-stakes exceptions still need human judgment.**
 Two vendor records with different bank accounts. A counterparty jurisdiction change. A corporate restructuring. These are Tier 3. The AI knows it doesn't know enough. It escalates. A human decides.

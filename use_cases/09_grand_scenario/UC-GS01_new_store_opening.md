@@ -138,11 +138,11 @@ GLD-LOC-STORE-2A
 
 **The DQ Issues:**
 - 8 vendors supply this store. 3 are already qualified in the system. 5 are new — 2 have incomplete TRNs, 1 has a name mismatch between the trade licence and the ERP record
-- One vendor (`Al Baraka Supplies`) was also found in the Customer master (they buy corporate gifts) — dual-role detected
+- One vendor (`Al Zafra Supplies`) was also found in the Customer master (they buy corporate gifts) — dual-role detected
 
 **AURUM Actions:**
 - UNEARTH: 2 incomplete TRNs flagged (UC-V03 pattern). Name mismatch: trade licence vs ERP → legal name from trade licence wins.
-- REFINE: Al Baraka → dual-role link to customer record (UC-V05 pattern). 5 new vendors onboarded with DQ remediation workflow initiated for the 2 with TRN issues.
+- REFINE: Al Zafra → dual-role link to customer record (UC-V05 pattern). 5 new vendors onboarded with DQ remediation workflow initiated for the 2 with TRN issues.
 - UNFURL: 6 fully qualified vendors linked to `GLD-LOC-STORE-2A` via store-vendor supply list. 2 vendors in `PENDING_TRN` status — provisional supply approved for 30 days pending remediation.
 - MARK: `VENDOR_STORE_QUALIFICATION(8 vendors → GLD-LOC-STORE-2A, 6 approved, 2 provisional, 1 dual-role detected)`
 
@@ -151,13 +151,13 @@ GLD-LOC-STORE-2A
 ### 6. COUNTERPARTY — Onboard the Landlord
 
 **The DQ Issues:**
-- The landlord is Emaar Properties PJSC. Legal has one record in the contract system. Treasury has a different record with a different LEI (legacy placeholder). Finance has no record — they've been booking lease payments to a manual GL entry.
+- The landlord is Verdana Properties PJSC. Legal has one record in the contract system. Treasury has a different record with a different LEI (legacy placeholder). Finance has no record — they've been booking lease payments to a manual GL entry.
 - LEI on Treasury record fails check-digit validation (UC-CP02 pattern)
 
 **AURUM Actions:**
 - UNEARTH: LEI validation failure on Treasury record. Three source records for the same legal entity.
 - REFINE: Three records merged into one golden counterparty `GLD-CP-EMAAR`. Correct LEI sourced from GLEIF registry. Lease contract linked to the counterparty golden record.
-- UNFURL: Emaar golden record published. Finance GL manual entry replaced with a proper counterparty-coded payable. IFRS 16 right-of-use asset registered against `GLD-LOC-STORE-2A` with Emaar as lessor.
+- UNFURL: Verdana golden record published. Finance GL manual entry replaced with a proper counterparty-coded payable. IFRS 16 right-of-use asset registered against `GLD-LOC-STORE-2A` with Verdana as lessor.
 - MARK: `COUNTERPARTY_ONBOARDED(GLD-CP-EMAAR, role=Landlord, linked_location=GLD-LOC-STORE-2A, lease_start=2025-01-01)`
 
 ---
@@ -201,7 +201,7 @@ Every domain. Every golden record. Every cross-domain link. All consistent. All 
 | Asset | Carlos (DataOps) | Confirmed serial numbers on delivery |
 | Product | Arun (BI Head) | Approved store catalogue, excluded discontinued |
 | Vendor | Amara (BA) | Confirmed qualifications, noted single-source risk |
-| Counterparty | Nadia (Governance) + Tariq (Security) | Confirmed Emaar LEI, screening CLEAR |
+| Counterparty | Nadia (Governance) + Tariq (Security) | Confirmed Verdana LEI, screening CLEAR |
 | Customer | Shazia (DQ Lead) | Confirmed catchment mapping, PDPL-compliant opt-in |
 
 ---
@@ -215,7 +215,7 @@ MARK query: GET /lineage?location_id=GLD-LOC-STORE-2A
 → assets_provisioned: 35 (2024-12-28, serial confirmed 2025-01-01)
 → products_listed: 335 (2024-12-20)
 → vendors_qualified: 8 (2024-12-10)
-→ counterparty_onboarded: Emaar (2024-12-05)
+→ counterparty_onboarded: Verdana (2024-12-05)
 → customers_assigned: 4200 (2025-01-01)
 → store_ready: TRUE
 → day_1_blockers: 0

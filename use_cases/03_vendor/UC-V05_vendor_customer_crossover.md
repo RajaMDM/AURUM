@@ -1,7 +1,7 @@
 # UC-V05: Vendor-Customer Crossover (Dual Role)
 
 ## Summary
-"Noon.com" is both a major e-commerce marketplace customer (they buy wholesale product from the company) AND a distribution vendor (the company sells through Noon's platform and receives commission payments). The ERP has two separate records — one in the Customer master, one in the Vendor master — with no linkage. This dual-role blind spot creates credit limit miscalculations, netting-off failures, and incomplete 360° relationship views.
+"Souk.io" is both a major e-commerce marketplace customer (they buy wholesale product from the company) AND a distribution vendor (the company sells through Souk.io's platform and receives commission payments). The ERP has two separate records — one in the Customer master, one in the Vendor master — with no linkage. This dual-role blind spot creates credit limit miscalculations, netting-off failures, and incomplete 360° relationship views.
 
 ## Domain
 Vendor / Customer (Cross-domain)
@@ -10,19 +10,19 @@ Vendor / Customer (Cross-domain)
 REFINE · UNFURL · MARK
 
 ## Business Impact
-- Credit limit set for the customer entity only — doesn't account for amounts owed BY the company to Noon as vendor
-- Netting-off opportunity missed: AED 200K owed to Noon (vendor) vs AED 150K owed by Noon (customer) — net exposure is only AED 50K, but finance sees two separate balances
+- Credit limit set for the customer entity only — doesn't account for amounts owed BY the company to Souk.io as vendor
+- Netting-off opportunity missed: AED 200K owed to Souk.io (vendor) vs AED 150K owed by Souk.io (customer) — net exposure is only AED 50K, but finance sees two separate balances
 - Relationship management: account manager and vendor manager don't know they're managing the same legal entity
 - Regulatory: AML netting and offset arrangements require identification of dual-role counterparties
 
 ## Scenario Setup
-CRM has `Noon.com FZ-LLC` as a customer (`CUST-00890`). ERP Vendor master has `Noon E-Commerce LLC` as vendor (`VEND-00445`). Same TRN, different name variants, different teams managing each.
+CRM has `Souk.io FZ-LLC` as a customer (`CUST-00890`). ERP Vendor master has `Souk.io E-Commerce LLC` as vendor (`VEND-00445`). Same TRN, different name variants, different teams managing each.
 
 ## Example Records
 
 | field | CRM CUST-00890 | ERP VEND-00445 |
 |-------|----------------|----------------|
-| entity_name | Noon.com FZ-LLC | Noon E-Commerce LLC |
+| entity_name | Souk.io FZ-LLC | Souk.io E-Commerce LLC |
 | tax_id | TRN100789001234 | TRN100789001234 |
 | role | Customer | Vendor |
 | city | Dubai | Dubai |
@@ -46,8 +46,8 @@ Steward confirms the linkage is intentional (not an error) and notifies the fina
 
 ## Expected Golden Record
 Two linked records:
-- `GLD-CUST-00890`: `legal_name: Noon.com FZ-LLC`, `role: Customer`, `related_vendor_id: GLD-VEND-00445`
-- `GLD-VEND-00445`: `legal_name: Noon E-Commerce LLC`, `role: Vendor`, `related_customer_id: GLD-CUST-00890`
+- `GLD-CUST-00890`: `legal_name: Souk.io FZ-LLC`, `role: Customer`, `related_vendor_id: GLD-VEND-00445`
+- `GLD-VEND-00445`: `legal_name: Souk.io E-Commerce LLC`, `role: Vendor`, `related_customer_id: GLD-CUST-00890`
 
 ## CLI Demo Command
 ```bash

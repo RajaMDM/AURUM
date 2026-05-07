@@ -15,7 +15,7 @@ Product `SKU-0077` (Wireless Headphones) is sourced from three vendors according
 ## Scenario Setup
 
 **Before MDM:**
-- Product `SKU-0042` approved vendors: `VEND-00101` (AlBaraka Electronics), `VEND-00102` (Al Baraka Electronics LLC), `VEND-00301` (TechSource ME)
+- Product `SKU-0042` approved vendors: `VEND-00101` (Al Zafra Electronics), `VEND-00102` (Al Zafra Electronics LLC), `VEND-00301` (TechSource ME)
 - `VEND-00101` and `VEND-00102` were duplicates → merged by Vendor MDM into `GLD-VEND-00101`
 - Product uses vendor's internal part number `VPN-HDP-442` — vendor golden record now uses `VPN-HDP-442-REV2`
 

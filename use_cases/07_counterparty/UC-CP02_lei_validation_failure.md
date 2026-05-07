@@ -22,11 +22,11 @@ Treasury system migrated from a 18-character legacy identifier to LEI. The migra
 
 | counterparty_id | legal_name | lei_code | issue |
 |----------------|-----------|---------|-------|
-| CP-00101 | HSBC UAE | 213800EXAMPLEHSBCAE1 | Valid ✓ |
-| CP-00102 | Mashreq Bank | 213800MASHREQ000001 | 19 chars (too short) |
+| CP-00101 | Halcyon Bank UAE | 213800EXAMPLEHSBCAE1 | Valid ✓ |
+| CP-00102 | Pinnacle Bank | 213800MASHREQ000001 | 19 chars (too short) |
 | CP-00103 | Emirates NBD | 213800ENBD0000000099 | Wrong check digit |
-| CP-00104 | Al Hilal Bank | 00000000000000000001 | Placeholder zeros |
-| CP-00105 | Dubai Islamic Bank | DIBUAENBD2024000001X | Non-standard format |
+| CP-00104 | Crescent Bank | 00000000000000000001 | Placeholder zeros |
+| CP-00105 | Duna Islamic Bank | DIBUAENBD2024000001X | Non-standard format |
 
 ## AURUM Pipeline Walk-Through
 

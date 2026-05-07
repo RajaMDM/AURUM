@@ -1,7 +1,7 @@
 # UC-V04: Duplicate Vendor Detection
 
 ## Summary
-"Al Baraka Office Supplies" was entered twice in the ERP — once by the Dubai procurement team and once by the Abu Dhabi office, each unaware of the other. Both records have been used for purchase orders. The company is now paying two different bank accounts for what may be the same vendor — a classic duplicate payment risk that also opens a fraud vector.
+"Al Zafra Office Supplies" was entered twice in the ERP — once by the Dubai procurement team and once by the Abu Dhabi office, each unaware of the other. Both records have been used for purchase orders. The company is now paying two different bank accounts for what may be the same vendor — a classic duplicate payment risk that also opens a fraud vector.
 
 ## Domain
 Vendor
@@ -16,14 +16,14 @@ REFINE · UNFURL · MARK
 - Supplier relationship management: two account managers potentially managing the same supplier
 
 ## Scenario Setup
-Dubai procurement team created `ERP-V301` with trading name "Al Baraka Office Supplies" and email `info@albaraka.ae`. Abu Dhabi team created `ERP-V302` with legal name "Al Baraka Office Supplies LLC" and email `accounts@albaraka.ae`. Same physical address, different email contacts, different bank accounts on file.
+Dubai procurement team created `ERP-V301` with trading name "Al Zafra Office Supplies" and email `info@albaraka.ae`. Abu Dhabi team created `ERP-V302` with legal name "Al Zafra Office Supplies LLC" and email `accounts@albaraka.ae`. Same physical address, different email contacts, different bank accounts on file.
 
 ## Example Records
 
 | field | ERP-V301 | ERP-V302 |
 |-------|----------|----------|
-| legal_name | Al Baraka Office Supplies | Al Baraka Office Supplies LLC |
-| trading_name | Al Baraka | Al Baraka Supplies |
+| legal_name | Al Zafra Office Supplies | Al Zafra Office Supplies LLC |
+| trading_name | Al Zafra | Al Zafra Supplies |
 | tax_id | | TRN100567890001234 |
 | contact_email | info@albaraka.ae | accounts@albaraka.ae |
 | city | Dubai | Abu Dhabi |
@@ -36,7 +36,7 @@ Dubai procurement team created `ERP-V301` with trading name "Al Baraka Office Su
 
 **UNEARTH** — Vendor profiler: `ERP-V301` flagged for missing TRN. Email domain `@albaraka.ae` matches across both records — flagged as potential duplicate signal.
 
-**REFINE** — Matcher: name similarity `Al Baraka Office Supplies` vs `Al Baraka Office Supplies LLC` = 0.92. Email domain match. BUT city differs (Dubai vs Abu Dhabi) and bank accounts differ — match score 0.81 (above 0.75 threshold but below 0.90 auto-merge threshold). Flagged as `PROBABLE_DUPLICATE` for steward review.
+**REFINE** — Matcher: name similarity `Al Zafra Office Supplies` vs `Al Zafra Office Supplies LLC` = 0.92. Email domain match. BUT city differs (Dubai vs Abu Dhabi) and bank accounts differ — match score 0.81 (above 0.75 threshold but below 0.90 auto-merge threshold). Flagged as `PROBABLE_DUPLICATE` for steward review.
 
 **UNFURL** — Not merged automatically. Both records held in `PENDING_STEWARD_REVIEW` state. Steward notified with side-by-side comparison.
 
@@ -49,7 +49,7 @@ HIGH priority — different bank accounts are the key risk signal. Steward must:
 3. Either MERGE (same entity, consolidate to one bank account) or SPLIT (genuinely different trading entities)
 
 ## Expected Golden Record
-If merged: `GLD-VEND-0301`, `legal_name: Al Baraka Office Supplies LLC`, TRN from V302, bank account verified by steward.
+If merged: `GLD-VEND-0301`, `legal_name: Al Zafra Office Supplies LLC`, TRN from V302, bank account verified by steward.
 
 ## CLI Demo Command
 ```bash

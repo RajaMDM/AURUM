@@ -1,7 +1,7 @@
 # UC-CP01: Dual-Role Detection — Same Entity as Vendor and Customer
 
 ## Summary
-Emirates Airline appears in the CRM as a corporate customer (they buy business-class loungewear from the company) and in the ERP vendor master as a supplier (they provide chartered freight services). Two records, one legal entity, zero linkage. Treasury needs to know the net financial exposure. Legal needs one contract register entry. And any sanctions screening must cover both roles simultaneously — not just one.
+Zephyr Air appears in the CRM as a corporate customer (they buy business-class loungewear from the company) and in the ERP vendor master as a supplier (they provide chartered freight services). Two records, one legal entity, zero linkage. Treasury needs to know the net financial exposure. Legal needs one contract register entry. And any sanctions screening must cover both roles simultaneously — not just one.
 
 ## Domain
 Counterparty
@@ -16,13 +16,13 @@ REFINE · UNFURL · MARK
 - Credit risk: credit limit set for the customer role only — doesn't offset the payable position
 
 ## Scenario Setup
-CRM record: `Emirates Airline PJSC` (customer, `CUST-00445`). ERP vendor record: `Emirates Airlines` (vendor, `VEND-00231`). Same LEI (`549300EXAMPLE0000001`), different name spelling, different teams managing each.
+CRM record: `Zephyr Air PJSC` (customer, `CUST-00445`). ERP vendor record: `Zephyr Airlines` (vendor, `VEND-00231`). Same LEI (`549300EXAMPLE0000001`), different name spelling, different teams managing each.
 
 ## Example Records
 
 | field | CRM CUST-00445 | ERP VEND-00231 |
 |-------|----------------|----------------|
-| legal_name | Emirates Airline PJSC | Emirates Airlines |
+| legal_name | Zephyr Air PJSC | Zephyr Airlines |
 | lei_code | 549300EXAMPLE0000001 | 549300EXAMPLE0000001 |
 | role | Customer | Vendor |
 | jurisdiction | UAE | AE |

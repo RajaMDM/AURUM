@@ -207,7 +207,7 @@ normalise_sku(" SKU-0042") → "sku0042"  # leading space stripped
 
 ### 🔴 Without MDM: Paying the Same Supplier Twice
 
-The accounts payable team processes invoices. This week, they receive two invoices — one from "EmiratesTech" (AED 45,000) and one from "Emirates Tech Solutions LLC" (AED 45,000). Same amount, suspiciously similar supplier names. Different bank accounts.
+The accounts payable team processes invoices. This week, they receive two invoices — one from "FalcoTech" (AED 45,000) and one from "Falco Tech Solutions LLC" (AED 45,000). Same amount, suspiciously similar supplier names. Different bank accounts.
 
 Are these the same? Is it a duplicate invoice? Or two separate suppliers who happen to charge the same amount this week?
 
@@ -219,7 +219,7 @@ The finance team spends three days recovering the duplicate payment. The vendor'
 
 ### 🟢 With MDM — Vendor Domain Only
 
-AURUM identifies `EmiratesTech` and `Emirates Tech Solutions LLC` as the same legal entity (matched on TRN `TRN100234567003`, name similarity 0.87, same city/country). One golden vendor record. One bank account (verified by steward). The AP system sees one vendor — the second invoice triggers a duplicate payment warning before it is processed.
+AURUM identifies `FalcoTech` and `Falco Tech Solutions LLC` as the same legal entity (matched on TRN `TRN100234567003`, name similarity 0.87, same city/country). One golden vendor record. One bank account (verified by steward). The AP system sees one vendor — the second invoice triggers a duplicate payment warning before it is processed.
 
 The AED 45,000 stays in the company's account.
 
@@ -351,18 +351,18 @@ Let us paint the pre-MDM picture across all seven domains simultaneously.
 
 **Monday morning. The executive team meeting.**
 
-The CEO asks: *"What is our total exposure to Majid Al Futtaim Group?"*
+The CEO asks: *"What is our total exposure to Apex Retail Group?"*
 
 The CFO pulls up three screens:
-- **CRM:** MAF is a customer. Receivable: AED 850K. But is this the parent group or a subsidiary? Unclear.
-- **ERP Vendor:** "MAF Retail LLC" is a supplier. Payable: AED 1.5M. Is this the same entity as the CRM customer? Unknown.
-- **Treasury:** "MAF" has an FX forward. MTM: AED 200K gain. Is this the same MAF? The LEI doesn't match the others — one has a placeholder LEI.
+- **CRM:** Apex is a customer. Receivable: AED 850K. But is this the parent group or a subsidiary? Unclear.
+- **ERP Vendor:** "Apex Retail LLC" is a supplier. Payable: AED 1.5M. Is this the same entity as the CRM customer? Unknown.
+- **Treasury:** "Apex" has an FX forward. MTM: AED 200K gain. Is this the same Apex? The LEI doesn't match the others — one has a placeholder LEI.
 
 The CFO cannot answer the question. She gives a range: "Between AED 200K net gain and AED 2.55M combined, depending on which entities are the same."
 
-The CEO's follow-up: *"And how many products does MAF retail for us, and at which stores?"*
+The CEO's follow-up: *"And how many products does Apex retail for us, and at which stores?"*
 
-The Product team: products are in PIM. The Location team: stores are in YEXT and ERP. The Vendor team: MAF as a marketplace vendor is in PROCUREMENT. None of these systems share a common ID.
+The Product team: products are in PIM. The Location team: stores are in YEXT and ERP. The Vendor team: Apex as a marketplace vendor is in PROCUREMENT. None of these systems share a common ID.
 
 The answer takes three days to compile. It's probably wrong.
 
@@ -389,7 +389,7 @@ After all seven domains are mastered independently:
 
 The individual domains are reporting correctly. The marketing team's customer emails go to 2.6M unique people (not 3.2M with duplicates). The warehouse manager sees accurate stock counts. The AP team doesn't pay the same supplier twice.
 
-**The CFO's Monday morning question?** Still unanswerable. Because the golden customer record for MAF doesn't link to the golden vendor record for MAF. They are in separate master data stores with no shared identifier.
+**The CFO's Monday morning question?** Still unanswerable. Because the golden customer record for Apex doesn't link to the golden vendor record for Apex. They are in separate master data stores with no shared identifier.
 
 The silos are cleaner. They are still silos.
 
@@ -400,9 +400,9 @@ The silos are cleaner. They are still silos.
 In a siloed MDM architecture, each domain has its own golden record store:
 
 ```
-Customer Golden Store:   { GLD-CUST-00890: "MAF Retail (Buyer)", ... }
-Vendor Golden Store:     { GLD-VEND-00445: "MAF Logistics (Supplier)", ... }
-Counterparty Store:      { GLD-CP-00789: "MAF Treasury (FX)", ... }
+Customer Golden Store:   { GLD-CUST-00890: "Apex Retail (Buyer)", ... }
+Vendor Golden Store:     { GLD-VEND-00445: "Apex Logistics (Supplier)", ... }
+Counterparty Store:      { GLD-CP-00789: "Apex Treasury (FX)", ... }
 ```
 
 These three golden records represent the same legal entity. But without cross-domain linkage, no system can join them. A SQL join on `legal_name` would fail (three different name variants). A join on `tax_id` would fail (TRN is in Vendor, not Counterparty). A join on `lei_code` would fail (only Counterparty has LEI in this setup).
@@ -413,9 +413,9 @@ The missing layer is a **cross-domain entity resolution table**:
 cross_domain_links:
   entity_group_id  | domain     | golden_id       | link_type
   ─────────────────────────────────────────────────────────────
-  ENT-MAF-001      | customer   | GLD-CUST-00890  | SAME_LEGAL_ENTITY
-  ENT-MAF-001      | vendor     | GLD-VEND-00445  | SAME_LEGAL_ENTITY
-  ENT-MAF-001      | counterparty | GLD-CP-00789  | SAME_LEGAL_ENTITY
+  ENT-APEX-001      | customer   | GLD-CUST-00890  | SAME_LEGAL_ENTITY
+  ENT-APEX-001      | vendor     | GLD-VEND-00445  | SAME_LEGAL_ENTITY
+  ENT-APEX-001      | counterparty | GLD-CP-00789  | SAME_LEGAL_ENTITY
 ```
 
 Without this table, the silos are clean but blind to each other. Building this table is the work of Act III.
@@ -512,7 +512,7 @@ In Act III, the bridges built are:
 - ✅ Vendor ↔ Product (approved vendor list)
 
 **Left out:**
-- ❌ **Counterparty** is still isolated. MAF's three roles (customer, vendor, counterparty) are still three separate golden records with no shared entity group ID. Treasury still can't answer the net exposure question.
+- ❌ **Counterparty** is still isolated. Apex's three roles (customer, vendor, counterparty) are still three separate golden records with no shared entity group ID. Treasury still can't answer the net exposure question.
 - ❌ **Customer ↔ Location** — which customers belong to which store catchment? The loyalty system still routes offers to the nearest *source system* store, not the golden location. Customers near the new Dubai Hills store are still getting Dubai Mall offers.
 - ❌ **Vendor ↔ Location** — which vendors supply which stores? The supply chain team still can't see approved vendor lists by store. The new Dubai Hills store opening requires manual vendor qualification because the system can't query "approved vendors for this location."
 - ❌ **Employee ↔ Product** — which products can each employee's team see, approve, or purchase? The product approval workflow still uses HRMS email addresses, not golden employee IDs.
@@ -620,7 +620,7 @@ Vendor MDM runs for the 8 store suppliers. 6 fully qualified. 2 in 30-day provis
 
 **One week before opening:**
 
-Counterparty MDM runs. Emaar Properties PJSC (the landlord) — 3 source records from LEGAL, TREASURY, and COMPLIANCE — merged into one golden counterparty `GLD-CP-EMAAR`. LEI verified from GLEIF. Lease booked in the financial system against `GLD-CP-EMAAR`. IFRS 16 right-of-use asset registered. Rent payments automated — no more manual GL entries.
+Counterparty MDM runs. Verdana Properties PJSC (the landlord) — 3 source records from LEGAL, TREASURY, and COMPLIANCE — merged into one golden counterparty `GLD-CP-EMAAR`. LEI verified from GLEIF. Lease booked in the financial system against `GLD-CP-EMAAR`. IFRS 16 right-of-use asset registered. Rent payments automated — no more manual GL entries.
 
 Customer catchment assignment: 4,200 loyalty customers in the Dubai Hills catchment area assigned to `GLD-LOC-STORE-2A`. 1,100 source-ID re-anchors applied (post-Customer MDM). 340 first-time store assignments. Opening campaign sent — one email per golden customer.
 
@@ -644,7 +644,7 @@ MARK query: GET /lineage?location_id=GLD-LOC-STORE-2A
 → assets_provisioned:        35          (serial confirmed 2025-01-01 09:14)
 → products_listed:           335         (2024-12-20)
 → vendors_qualified:         8           (6 approved, 2 provisional)
-→ counterparty_onboarded:    Emaar       (2024-12-05, LEI verified)
+→ counterparty_onboarded:    Verdana       (2024-12-05, LEI verified)
 → customers_assigned:        4,200       (2025-01-01 00:01)
 → day_1_revenue:             AED 47,230  (7 hours, 335 SKUs, 22 staff)
 → day_1_blockers:            0
@@ -685,7 +685,7 @@ The golden web is held together by one table — the entity group registry:
 
 ```sql
 CREATE TABLE entity_groups (
-    entity_group_id  VARCHAR(64) PRIMARY KEY,  -- "ENT-MAF-001"
+    entity_group_id  VARCHAR(64) PRIMARY KEY,  -- "ENT-APEX-001"
     canonical_name   VARCHAR(255),
     canonical_lei    VARCHAR(20),
     canonical_tax_id VARCHAR(50)
@@ -707,7 +707,7 @@ With this table, the CFO's Monday morning question is a three-line query:
 SELECT egm.domain, egm.role, egm.golden_id
 FROM entity_groups eg
 JOIN entity_group_members egm ON eg.entity_group_id = egm.entity_group_id
-WHERE eg.canonical_name ILIKE '%Majid Al Futtaim%';
+WHERE eg.canonical_name ILIKE '%Apex Group%';
 ```
 
 Returns three rows: customer (AED 850K AR), vendor (AED 1.5M AP), counterparty (AED 200K MTM). Net: AED -450K.
@@ -740,7 +740,7 @@ events = lineage.query(
     event_types=["ONBOARDED", "SCREENED", "FIELD_CONFLICT", "HIERARCHY_CORRECTED"],
     date_range=("2018-01-01", "2024-12-31")
 )
-# Returns: complete provenance for Emaar counterparty since relationship started
+# Returns: complete provenance for Verdana counterparty since relationship started
 ```
 
 No manual reconstruction. No spreadsheet archaeology. The answer is always there.

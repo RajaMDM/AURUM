@@ -16,7 +16,7 @@ MARK · UNFURL
 - Data Subject Access Request: financial counterparties have data rights — lineage enables accurate SARs
 
 ## Scenario Setup
-The UAE Central Bank examiner asks: "For counterparty Standard Chartered PLC — show us the complete record of your data management decisions, screening results, and who approved what, from onboarding to today." The relationship is 6 years old, spans two merges (when 4 duplicate records were consolidated), a jurisdiction correction, and two sanctions screenings.
+The UAE Central Bank examiner asks: "For counterparty Meridian Bank PLC — show us the complete record of your data management decisions, screening results, and who approved what, from onboarding to today." The relationship is 6 years old, spans two merges (when 4 duplicate records were consolidated), a jurisdiction correction, and two sanctions screenings.
 
 ## Example Lineage Timeline
 
@@ -51,7 +51,7 @@ No decision needed at query time — the lineage was built continuously. The exa
 ```json
 {
   "golden_id": "GLD-CP-0200",
-  "legal_name": "Standard Chartered PLC",
+  "legal_name": "Meridian Bank PLC",
   "relationship_since": "2018-03-01",
   "total_events": 9,
   "screening_results": ["CLEAR 2022-04", "CLEAR 2024-01"],

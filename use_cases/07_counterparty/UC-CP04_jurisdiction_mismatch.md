@@ -1,7 +1,7 @@
 # UC-CP04: Jurisdiction Mismatch
 
 ## Summary
-A counterparty record shows `legal_name: Al Baraka Banking Group` with `jurisdiction: Bahrain` in the LEGAL system, but `jurisdiction: UAE` in the COMPLIANCE system and `jurisdiction: BH` in TREASURY. The three-way jurisdiction conflict matters enormously: sanctions screening rules, AML risk rating, withholding tax rates, and regulatory reporting format all depend on the correct legal jurisdiction of incorporation — not where they operate.
+A counterparty record shows `legal_name: Al Nakheel Banking Group` with `jurisdiction: Bahrain` in the LEGAL system, but `jurisdiction: UAE` in the COMPLIANCE system and `jurisdiction: BH` in TREASURY. The three-way jurisdiction conflict matters enormously: sanctions screening rules, AML risk rating, withholding tax rates, and regulatory reporting format all depend on the correct legal jurisdiction of incorporation — not where they operate.
 
 ## Domain
 Counterparty
@@ -16,13 +16,13 @@ UNEARTH · REFINE
 - Regulatory reporting: counterparty's home jurisdiction must be reported correctly to UAE CBUAE
 
 ## Scenario Setup
-Al Baraka Banking Group is legally incorporated in Bahrain (correct). The COMPLIANCE system was set up with `UAE` by mistake (the team member confused operating presence with incorporation). TREASURY uses the ISO country code `BH` which is correct but in a different format. The LEGAL system has the narrative name `Bahrain`.
+Al Nakheel Banking Group is legally incorporated in Bahrain (correct). The COMPLIANCE system was set up with `UAE` by mistake (the team member confused operating presence with incorporation). TREASURY uses the ISO country code `BH` which is correct but in a different format. The LEGAL system has the narrative name `Bahrain`.
 
 ## Example Records
 
 | field | LEGAL CP-301 | COMPLIANCE CP-302 | TREASURY CP-303 |
 |-------|-------------|------------------|----------------|
-| legal_name | Al Baraka Banking Group | Al Baraka Banking Group BSC | Al Baraka Bank |
+| legal_name | Al Nakheel Banking Group | Al Nakheel Banking Group BSC | Al Nakheel Bank |
 | jurisdiction | Bahrain | UAE | BH |
 | lei_code | 2138005EXAMPLE00001 | 2138005EXAMPLE00001 | 2138005EXAMPLE00001 |
 | role | Counterparty | Counterparty | Banking Partner |
@@ -40,13 +40,13 @@ Al Baraka Banking Group is legally incorporated in Bahrain (correct). The COMPLI
 **UNFURL** — Golden record: `jurisdiction: BH`. COMPLIANCE system receives correction via reverse sync.
 
 ## Stewardship Decision Point
-Tariq (Security & Compliance) confirms the correction. Triggers a re-run of sanctions screening with the correct jurisdiction. AML risk rating recalculated. No adverse finding — Al Baraka Banking Group is not on any relevant list.
+Tariq (Security & Compliance) confirms the correction. Triggers a re-run of sanctions screening with the correct jurisdiction. AML risk rating recalculated. No adverse finding — Al Nakheel Banking Group is not on any relevant list.
 
 ## Expected Golden Record
 
 | field | golden_value | source | confidence |
 |-------|-------------|--------|------------|
-| legal_name | Al Baraka Banking Group BSC | COMPLIANCE (most formal name) | 0.94 |
+| legal_name | Al Nakheel Banking Group BSC | COMPLIANCE (most formal name) | 0.94 |
 | jurisdiction | BH | LEGAL + GLEIF validation | 1.0 |
 | lei_code | 2138005EXAMPLE00001 | Consensus | 1.0 |
 
