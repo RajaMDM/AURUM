@@ -301,6 +301,7 @@ The [`use_cases/`](use_cases/) directory contains **41 real-world MDM scenario p
 |----------|-----------|
 | [The Intelligent Refinery](docs/narratives/THE_INTELLIGENT_REFINERY.md) | **Start here.** MDM in the AI era — LLM rule generation, agentic stewardship, MCP-native pipeline, the 5 questions every CTO should ask |
 | [Imagine a World](docs/narratives/THE_MDM_WORLD.md) | The 4-act MDM journey — single domain → all domains → cross-domain → full golden web, with before/after stories for every scenario |
+| [How We Build AURUM](docs/HOW_WE_BUILD.md) | The AI stack behind this project — Hermes, BMAD, gstack, Claude Code, Telegram. Running an enterprise MDM project from a phone. |
 | [Data Sovereignty & Compliance](docs/DATA_SOVEREIGNTY_AND_COMPLIANCE.md) | How AURUM aligns with data laws across the GCC (UAE PDPL, ADDA, DDA, KSA PDPL, Qatar PDPL) and globally (GDPR, CCPA, DPDP, PIPL, POPIA and more) |
 | [Disclaimer](docs/DISCLAIMER.md) | All company names, entities and scenarios in this repo are entirely fictional. Any resemblance to real organisations is purely coincidental. |
 
