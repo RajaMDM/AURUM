@@ -37,8 +37,12 @@ def main() -> None:
 
     # ── STAGE 01: ASSAY ──────────────────────────────────────────────
     separator("STAGE 01: ASSAY — Inspect the raw ore")
-    generate_customers(n=50)
+    # Use the full generated dataset (600 rows) — guarantees matcher finds duplicates.
+    # Run: python shared/sample_data/generate_all.py  before this demo.
     customer_path = OUTPUT_DIR / "customers_dirty.csv"
+    if not customer_path.exists():
+        print("  ℹ️  Generating sample data first...")
+        generate_customers(n=600)
 
     inspector = SchemaInspector(source_name="CRM_EXPORT")
     schema = inspector.inspect(customer_path)
@@ -46,7 +50,7 @@ def main() -> None:
     print(f"  Rows:           {schema['row_count']}")
     print(f"  Fields:         {schema['field_count']}")
     print(f"  High-null:      {schema['high_null_fields']}")
-    assert schema["row_count"] == 50, "ASSAY: row count mismatch"
+    assert schema["row_count"] >= 50, "ASSAY: row count too low"
     assert schema["field_count"] > 0, "ASSAY: no fields found"
     print("  ✅ ASSAY passed")
 
@@ -59,14 +63,14 @@ def main() -> None:
     print(f"  DQ issues:      {summary['issues']}")
     print(f"  Quality score:  {summary['quality_score_pct']}%")
     print(f"  Issues by rule: {summary['by_rule']}")
-    assert summary["rows"] == 50, "UNEARTH: row count mismatch"
+    assert summary["rows"] >= 50, "UNEARTH: row count too low"
     print("  ✅ UNEARTH passed")
 
     # ── STAGE 03: REFINE ─────────────────────────────────────────────
     separator("STAGE 03: REFINE — Fuse many into one golden record")
     df = pd.read_csv(customer_path, dtype=str, keep_default_na=False)
 
-    candidates = find_candidates(df, sample_size=50)
+    candidates = find_candidates(df, sample_size=min(200, len(df)))
     matches = [c for c in candidates if c.is_match]
     print(f"  Candidates:     {len(candidates)}")
     print(f"  Matches (≥0.65):{len(matches)}")
