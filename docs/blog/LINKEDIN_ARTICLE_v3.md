@@ -156,7 +156,7 @@ If you find something useful in it, use it. If you disagree with something in it
 
 ---
 
-*I've spent twenty years in enterprise data — across financial services, retail, public sector, and technology. I build things rather than theorise about them. If you're working on MDM, data governance, or AI-augmented data management and want to compare notes — my DMs are open.*
+*I've spent twenty years in enterprise data — across retail, technology, and large-scale digital transformation. I build things rather than theorise about them. If you're working on MDM, data governance, or AI-augmented data management and want to compare notes — my DMs are open.*
 
 ---
 

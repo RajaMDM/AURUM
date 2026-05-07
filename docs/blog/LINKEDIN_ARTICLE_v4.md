@@ -418,7 +418,7 @@ If you find something useful in it, use it. If you disagree with something, I'd 
 
 ---
 
-*Twenty years in enterprise data — financial services, retail, public sector, technology. I build things rather than theorise about them. Working on MDM, data governance, or AI-augmented data management? My DMs are open.*
+*Twenty years in enterprise data — retail, technology, and large-scale digital transformation. I build things rather than theorise about them. Working on MDM, data governance, or AI-augmented data management? My DMs are open.*
 
 ---
 
