@@ -29,6 +29,10 @@ Visual walkthroughs of the pipeline, decision model, and knowledge graph layer �
 
 Includes: AURUM 5-stage pipeline · Three-tier stewardship model · gbrain memory layer · Nightly dream cycle · Knowledge compounding curve
 
+❓ **[docs/AURUM_FAQ.md](docs/AURUM_FAQ.md)**
+
+Common questions answered in plain English: Where is data stored? · Enterprise deployment options · Air-gapped setup · Does data go to OpenAI? · Is it production-ready? · What does gbrain add?
+
 ---
 
 ## The Five Stages
