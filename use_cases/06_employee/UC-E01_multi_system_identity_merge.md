@@ -1,7 +1,7 @@
 # UC-E01: Multi-System Identity Merge — Employee Across HRMS, AD, Payroll
 
 ## Summary
-Arun Mehta joined the company in March. HRMS created his record with employee ID `EMP-00445`. Active Directory provisioned him as `amehta` with no employee ID. Payroll imported from a legacy system where he's `Arun K. Mehta` with payroll ID `PAY-9921`. Three systems, three identifiers, no link between them. HR analytics, access reviews, and payroll reconciliation all fail when they can't join on a common key.
+Arun joined the company in March. HRMS created his record with employee ID `EMP-00445`. Active Directory provisioned him as `amehta` with no employee ID. Payroll imported from a legacy system where he's `Arun K.` with payroll ID `PAY-9921`. Three systems, three identifiers, no link between them. HR analytics, access reviews, and payroll reconciliation all fail when they can't join on a common key.
 
 ## Domain
 Employee
@@ -20,22 +20,22 @@ Three records for the same physical person across three systems with no shared i
 
 | source | id | name | email | dept |
 |--------|-----|------|-------|------|
-| HRMS | EMP-00445 | Arun Mehta | arun.mehta@company.com | BI & Analytics |
+| HRMS | EMP-00445 | Arun | arun.mehta@company.com | BI & Analytics |
 | AD | — | amehta | arun.mehta@company.com | — |
-| PAYROLL | PAY-9921 | Arun K. Mehta | a.mehta@company.com | Analytics |
+| PAYROLL | PAY-9921 | Arun K. | a.mehta@company.com | Analytics |
 
 ## AURUM Pipeline Walk-Through
 
 **ASSAY** — Three records from three schemas. AD record has no employee_id field — mapped to canonical schema with null. Email domain match across HRMS and AD. Payroll has a different email format (`a.mehta` vs `arun.mehta`).
 
-**UNEARTH** — Employee profiler: email format check — `a.mehta@company.com` is valid but differs from HRMS pattern. Department name: `BI & Analytics` vs `Analytics` — similarity 0.79, flagged as possible variant. Name: `Arun Mehta` vs `Arun K. Mehta` — middle initial present in Payroll only.
+**UNEARTH** — Employee profiler: email format check — `a.mehta@company.com` is valid but differs from HRMS pattern. Department name: `BI & Analytics` vs `Analytics` — similarity 0.79, flagged as possible variant. Name: `Arun` vs `Arun K.` — middle initial present in Payroll only.
 
 **REFINE** — Name similarity: 0.91. Email similarity (normalised domain): HRMS/AD share exact email → strong signal. HRMS+AD cluster first (score 0.97), then PAYROLL added (name+dept, score 0.84). All three in one cluster.
 
 **UNFURL** — Golden employee `GLD-EMP-00445`: `employee_id: EMP-00445`, `ad_account: amehta`, `payroll_id: PAY-9921`. Cross-system IDs stored so any system can find the golden record.
 
 ## Stewardship Decision Point
-Jin (Steward) confirms the Payroll email (`a.mehta@`) — an old format from the legacy system. Payroll is notified to update to the canonical email. AD account confirmed as belonging to Arun Mehta.
+Jin (Steward) confirms the Payroll email (`a.mehta@`) — an old format from the legacy system. Payroll is notified to update to the canonical email. AD account confirmed as belonging to Arun.
 
 ## Expected Golden Record
 
@@ -44,7 +44,7 @@ Jin (Steward) confirms the Payroll email (`a.mehta@`) — an old format from the
 | employee_id | EMP-00445 | HRMS |
 | ad_account | amehta | AD |
 | payroll_id | PAY-9921 | PAYROLL |
-| full_name | Arun Mehta | HRMS |
+| full_name | Arun | HRMS |
 | email | arun.mehta@company.com | HRMS/AD |
 | department | BI & Analytics | HRMS |
 

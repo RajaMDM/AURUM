@@ -1,7 +1,7 @@
 # UC-E03: Multi-Role Assignment
 
 ## Summary
-Shazia Hussain is the Data Quality Lead AND sits on the company's Data Governance Council as a named member. In HRMS she has one role. In the ERP project system she has a second role (`DGC Member`) with a different cost centre. In the AD she belongs to both the `DQ-Team` and `DGC-Members` groups. Three systems, three partial pictures of the same person's roles. AURUM links all role assignments to the single golden employee record.
+Shazia is the Data Quality Lead AND sits on the company's Data Governance Council as a named member. In HRMS she has one role. In the ERP project system she has a second role (`DGC Member`) with a different cost centre. In the AD she belongs to both the `DQ-Team` and `DGC-Members` groups. Three systems, three partial pictures of the same person's roles. AURUM links all role assignments to the single golden employee record.
 
 ## Domain
 Employee
@@ -22,7 +22,7 @@ Shazia has a primary HRMS record (`EMP-00101`) and a secondary ERP project recor
 
 | field | HRMS EMP-00101 | ERP PROJ-DGC-015 | AD |
 |-------|---------------|-------------------|-----|
-| name | Shazia Hussain | S. Hussain | shussain |
+| name | Shazia | S. | shussain |
 | email | shazia.hussain@company.com | s.hussain@company.com | shazia.hussain@company.com |
 | role | Data Quality Lead | DGC Member | — |
 | department | Data Management | Governance | — |
@@ -32,7 +32,7 @@ Shazia has a primary HRMS record (`EMP-00101`) and a secondary ERP project recor
 
 **ASSAY** — HRMS, ERP, and AD records ingested to canonical employee schema. Email variants: `shazia.hussain` (HRMS/AD) vs `s.hussain` (ERP) — same domain.
 
-**UNEARTH** — Employee profiler: email domain match across all three. Name: `Shazia Hussain` vs `S. Hussain` — 0.83 similarity. AD `shussain` maps to `shazia.hussain` via username convention check.
+**UNEARTH** — Employee profiler: email domain match across all three. Name: `Shazia` vs `S.` — 0.83 similarity. AD `shussain` maps to `shazia.hussain` via username convention check.
 
 **REFINE** — Single cluster formed (email domain + name). NOT merged into one flat record — multi-role model applied: golden employee `GLD-EMP-00101` with `roles: [{primary: DQ Lead, cc: CC-DM-001}, {secondary: DGC Member, cc: CC-GOV-005}]`.
 

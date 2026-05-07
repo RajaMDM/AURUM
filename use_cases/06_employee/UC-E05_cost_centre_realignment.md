@@ -22,9 +22,9 @@ HRMS was updated first (correctly). Payroll was updated (batch job). ERP was sup
 
 | employee_id | name | HRMS cost_centre | ERP cost_centre | Payroll cost_centre |
 |------------|------|-----------------|----------------|-------------------|
-| EMP-00310 | Nadia Al-Hassan | CC-OPS-UAE | CC-OPS-GCC | CC-OPS-UAE |
-| EMP-00315 | Carlos Rivera | CC-OPS-KSA | CC-OPS-GCC | CC-OPS-KSA |
-| EMP-00320 | Jin Park | CC-OPS-UAE | CC-OPS-GCC | CC-OPS-UAE |
+| EMP-00310 | Nadia | CC-OPS-UAE | CC-OPS-GCC | CC-OPS-UAE |
+| EMP-00315 | Carlos | CC-OPS-KSA | CC-OPS-GCC | CC-OPS-KSA |
+| EMP-00320 | Jin | CC-OPS-UAE | CC-OPS-GCC | CC-OPS-UAE |
 
 ## AURUM Pipeline Walk-Through
 

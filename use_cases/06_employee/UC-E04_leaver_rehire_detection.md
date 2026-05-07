@@ -1,7 +1,7 @@
 # UC-E04: Leaver-Rehire Detection
 
 ## Summary
-Lena Fischer left the company in January 2023. Her HRMS record was set to `Inactive`. She rejoined in September 2024 as a senior role — and was given a brand new employee ID (`EMP-00892`) by the new HR admin who didn't search for an existing record. Now two records exist for the same person. Her historical service record, previous performance reviews, and original hire date are orphaned on the old record — critical for long-service awards, pension entitlements, and rehire background check compliance.
+Lena left the company in January 2023. Her HRMS record was set to `Inactive`. She rejoined in September 2024 as a senior role — and was given a brand new employee ID (`EMP-00892`) by the new HR admin who didn't search for an existing record. Now two records exist for the same person. Her historical service record, previous performance reviews, and original hire date are orphaned on the old record — critical for long-service awards, pension entitlements, and rehire background check compliance.
 
 ## Domain
 Employee
@@ -16,14 +16,14 @@ ASSAY · REFINE · MARK
 - Rehire policy compliance: some roles have cooling-off periods — undetected rehire may violate policy
 
 ## Scenario Setup
-Old record: `EMP-00512` (Lena Fischer, Integration Lead, status: Inactive, hire_date: 2020-03-01, leave_date: 2023-01-15). New record: `EMP-00892` (Lena Fischer, Senior Integration Lead, status: Active, hire_date: 2024-09-01). Same name, same email domain, same department.
+Old record: `EMP-00512` (Lena, Integration Lead, status: Inactive, hire_date: 2020-03-01, leave_date: 2023-01-15). New record: `EMP-00892` (Lena, Senior Integration Lead, status: Active, hire_date: 2024-09-01). Same name, same email domain, same department.
 
 ## Example Records
 
 | field | EMP-00512 (old) | EMP-00892 (new) |
 |-------|----------------|----------------|
 | first_name | Lena | Lena |
-| last_name | Fischer | Fischer |
+| last_name | — | — |
 | email | lena.fischer@company.com | lena.fischer@company.com |
 | status | Inactive | Active |
 | hire_date | 2020-03-01 | 2024-09-01 |
@@ -36,7 +36,7 @@ Old record: `EMP-00512` (Lena Fischer, Integration Lead, status: Inactive, hire_
 
 **UNEARTH** — Employee profiler rehire detection rules:
 - `inactive_email_match`: active record email matches an inactive record → HIGH priority flag
-- `name_match_inactive`: `Lena Fischer` exact match on inactive record → `PROBABLE_REHIRE`
+- `name_match_inactive`: `Lena` exact match on inactive record → `PROBABLE_REHIRE`
 - `hire_gap`: gap between old leave_date (2023-01-15) and new hire_date (2024-09-01) = 20 months → within rehire detection window
 
 **REFINE** — Cluster formed: `EMP-00512` (Inactive) and `EMP-00892` (Active). Resolution: REHIRE pattern — do NOT merge flat, instead link as a LIFECYCLE_CHAIN: `EMP-00512 → EMP-00892` (predecessor → successor).

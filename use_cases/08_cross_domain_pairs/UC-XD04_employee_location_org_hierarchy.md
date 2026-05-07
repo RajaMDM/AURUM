@@ -42,7 +42,7 @@ Pierre (EA Head) and Sofia (PM) review jointly — this touches both the org des
 ## Validated Cross-Domain View
 
 ```
-Employee: Nadia Al-Hassan
+Employee: Nadia
 ├── department: UAE Operations
 ├── manager_id: GLD-EMP-00445
 ├── cost_centre: CC-OPS-UAE

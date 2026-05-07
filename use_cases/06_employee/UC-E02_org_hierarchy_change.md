@@ -16,16 +16,16 @@ REFINE · UNFURL · MARK
 - Finance: cost centre rollup by manager broken — budget variance reports incomplete
 
 ## Scenario Setup
-`EMP-00201` (Gaurav Mehta, VP GCC Operations) left the company. His record was set to `status: Inactive` in HRMS. 47 direct and indirect reports still reference `manager_id: EMP-00201`. The new structure splits his team into two new managers: `EMP-00445` (UAE) and `EMP-00512` (KSA).
+`EMP-00201` (Gaurav, VP GCC Operations) left the company. His record was set to `status: Inactive` in HRMS. 47 direct and indirect reports still reference `manager_id: EMP-00201`. The new structure splits his team into two new managers: `EMP-00445` (UAE) and `EMP-00512` (KSA).
 
 ## Example Records
 
 | employee_id | name | manager_id | manager_status | dept |
 |------------|------|-----------|---------------|------|
-| EMP-00310 | Nadia Al-Hassan | EMP-00201 | Inactive | GCC Operations |
-| EMP-00315 | Carlos Rivera | EMP-00201 | Inactive | GCC Operations |
-| EMP-00320 | Jin Park | EMP-00201 | Inactive | GCC Operations |
-| EMP-00201 | Gaurav Mehta | EMP-00100 | **Inactive** | GCC Operations |
+| EMP-00310 | Nadia | EMP-00201 | Inactive | GCC Operations |
+| EMP-00315 | Carlos | EMP-00201 | Inactive | GCC Operations |
+| EMP-00320 | Jin | EMP-00201 | Inactive | GCC Operations |
+| EMP-00201 | Gaurav | EMP-00100 | **Inactive** | GCC Operations |
 
 ## AURUM Pipeline Walk-Through
 

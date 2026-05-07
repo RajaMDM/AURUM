@@ -1,8 +1,8 @@
 # The Intelligent Data Refinery
 ### MDM in the Age of AI Agents — What Changes When Your Steward Can Think
 
-> *Authored by Inaayah Mirza, Technical Writer — AURUM Project*
-> *Technical review: Gaurav Mehra (Architect), Shazia Hussain (DQ Lead), Arun Mehta (BI Head)*
+> *Authored by Inaayah, Technical Writer — AURUM Project*
+> *Technical review: Gaurav (Architect), Shazia (DQ Lead), Arun (BI Head)*
 > *Challenged, stress-tested and kept honest by: Hermes (Team Lead)*
 
 ---
@@ -420,7 +420,7 @@ The refinery is intelligent now.
 *Raw data in. Hallmarked golden records out.*
 *Now with a team that never sleeps.*
 
-*— Inaayah Mirza, Technical Writer*
+*— Inaayah, Technical Writer*
 *— Raja Shahnawaz Soni, Author & Architect*
 *— Hermes, Team Lead*
 

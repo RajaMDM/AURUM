@@ -6,7 +6,7 @@ Asset · Location · Employee
 ## Summary
 Every asset must have a **location** (where it physically is) and an **owner/assignee** (which employee is responsible for it). But after MDM runs independently on each domain, the foreign keys break:
 - Asset `AST-0301` references `location_id: LOC-001` — but LOC-001 was merged into `GLD-LOC-0045` (Dubai Mall golden record)
-- Asset `AST-0301` references `assigned_to: EMP-00512` — but that employee (Lena Fischer) left and was re-hired as `EMP-00892` (new golden ID)
+- Asset `AST-0301` references `assigned_to: EMP-00512` — but that employee (Lena) left and was re-hired as `EMP-00892` (new golden ID)
 - The triangle is broken at two joints simultaneously
 
 This is the most common cross-domain MDM failure pattern in enterprise environments: asset registers that become meaningless because their references decay.
@@ -49,7 +49,7 @@ GLD-ASSET-0301 (HP Laptop)
     ├── location_id ──▶ GLD-LOC-0045 (Dubai Mall Store)
     │                       └── parent: LOC-R03 (Downtown Dubai)
     │
-    └── assigned_to ──▶ GLD-EMP-00892 (Lena Fischer, active)
+    └── assigned_to ──▶ GLD-EMP-00892 (Lena, active)
                             └── department: Data Integration
                             └── cost_centre: CC-INT-001
 ```

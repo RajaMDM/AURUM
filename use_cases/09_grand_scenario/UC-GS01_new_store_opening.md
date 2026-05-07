@@ -86,7 +86,7 @@ GLD-LOC-STORE-2A
 
 **The DQ Issues:**
 - 22 new staff onboarded — HRMS has them, AD provisioning is 4 days delayed
-- Store Manager (Inaayah Mirza) exists in the company as a Tech Writer (different role) — HRMS has two records, one active for old role, one pending for new role
+- Store Manager (Inaayah) exists in the company as a Tech Writer (different role) — HRMS has two records, one active for old role, one pending for new role
 - 3 seasonal staff are rehires from last year's Ramadan pop-up — rehire detection needed
 - `location_id` on all 22 employee records is still the contractor's site office address (LOC-OLD-SITE), not `GLD-LOC-STORE-2A`
 

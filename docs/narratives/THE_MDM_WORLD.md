@@ -1,7 +1,7 @@
 # Imagine a World Where Your Data Actually Knows Itself
 
-> *Authored by Inaayah Mirza, Technical Writer — AURUM Project*
-> *Reviewed by Shazia Hussain (DQ Lead), Pierre Leclerc (EA Head), Arun Mehta (BI Head)*
+> *Authored by Inaayah, Technical Writer — AURUM Project*
+> *Reviewed by Shazia (DQ Lead), Pierre (EA Head), Arun (BI Head)*
 > *With scenarios drawn from the AURUM use-case library*
 
 ---
@@ -276,7 +276,7 @@ An employee leaves the company. HR updates the HRMS — status: Inactive. But:
 
 The ex-employee's laptop is returned. But their AD account — with access to SharePoint, ERP, and the customer database — is still live for 48 hours. In a regulated environment, that's a reportable breach.
 
-On the re-hire side: Lena Fischer rejoins. A new employee ID is created. No one searched for her old record. Her 3-year service history, her previous manager relationships, her original hire date — all orphaned on a retired record. Her pension entitlements will be miscalculated. Long-service award eligibility will be wrong.
+On the re-hire side: Lena rejoins. A new employee ID is created. No one searched for her old record. Her 3-year service history, her previous manager relationships, her original hire date — all orphaned on a retired record. Her pension entitlements will be miscalculated. Long-service award eligibility will be wrong.
 
 ---
 
@@ -481,7 +481,7 @@ Priya's true CLV is now visible. The personalisation engine reclassifies her. Sh
 
 ## 🔴 The Asset-Location-Employee Triangle Without Bridges
 
-A Dell laptop (AST-0301) is assigned to Lena Fischer. Lena just rejoined the company (new golden ID: GLD-EMP-00892). Her old record (EMP-00512) is inactive.
+A Dell laptop (AST-0301) is assigned to Lena. Lena just rejoined the company (new golden ID: GLD-EMP-00892). Her old record (EMP-00512) is inactive.
 
 The ITSM system, which manages IT support tickets, has the laptop linked to EMP-00512. Lena raises a support ticket for a hardware issue. The ITSM system looks up the asset — it's assigned to EMP-00512 (inactive). The ticket routing logic says "inactive employee" and misfires the ticket to the IT archive queue instead of the active support queue. The ticket sits unseen for 3 days.
 
@@ -696,7 +696,7 @@ CREATE TABLE entity_group_members (
     domain           VARCHAR(32),   -- "customer", "vendor", "counterparty"
     golden_id        VARCHAR(64),   -- "GLD-CUST-00890"
     role             VARCHAR(64),   -- "buyer", "supplier", "fx_counterparty"
-    link_confirmed_by VARCHAR(128), -- "Nadia Al-Hassan"
+    link_confirmed_by VARCHAR(128), -- "Nadia"
     link_confirmed_at TIMESTAMP
 );
 ```
@@ -789,7 +789,7 @@ What you bring is the will to treat your data as the strategic asset it actually
 
 *Raw data in. Hallmarked golden records out.*
 
-*— Inaayah Mirza, Technical Writer, AURUM Project*
+*— Inaayah, Technical Writer, AURUM Project*
 *— Raja Shahnawaz Soni, Author & Architect*
 
 ---

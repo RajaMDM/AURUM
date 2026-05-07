@@ -57,7 +57,7 @@ No decision needed at query time — the lineage was built continuously. The exa
   "screening_results": ["CLEAR 2022-04", "CLEAR 2024-01"],
   "data_changes": ["jurisdiction corrected 2023-08", "4 duplicates merged 2023-08"],
   "current_roles": ["Vendor", "Customer"],
-  "approved_by": ["Nadia Al-Hassan", "Tariq Al-Rashid"]
+  "approved_by": ["Nadia", "Tariq"]
 }
 ```
 
