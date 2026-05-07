@@ -295,6 +295,15 @@ The [`use_cases/`](use_cases/) directory contains **41 real-world MDM scenario p
 
 ---
 
+## Narratives & Deep Dives
+
+| Document | What It Is |
+|----------|-----------|
+| [The Intelligent Refinery](docs/narratives/THE_INTELLIGENT_REFINERY.md) | **Start here.** MDM in the AI era — LLM rule generation, agentic stewardship, MCP-native pipeline, the 5 questions every CTO should ask |
+| [Imagine a World](docs/narratives/THE_MDM_WORLD.md) | The 4-act MDM journey — single domain → all domains → cross-domain → full golden web, with before/after stories for every scenario |
+
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). High-priority contributions for v0.2.0:
