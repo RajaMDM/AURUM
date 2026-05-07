@@ -10,6 +10,12 @@
 
 > **Raw data in. Hallmarked golden records out.**
 
+| | |
+|---|---|
+| 📊 **[Diagrams](https://github.com/RajaMDM/AURUM/blob/main/docs/diagrams/AURUM_DIAGRAMS.md)** | Pipeline · Decision model · gbrain memory · Dream cycle |
+| ❓ **[FAQ](https://github.com/RajaMDM/AURUM/blob/main/docs/AURUM_FAQ.md)** | Storage · Enterprise deployment · Air-gapped · Compliance |
+| 🧠 **[gbrain Integration](https://github.com/RajaMDM/AURUM/blob/main/docs/GBRAIN_INTEGRATION.md)** | Knowledge graph · Stewardship memory · Nightly dream cycle |
+
 AURUM is a vendor-agnostic Master Data Management reference implementation.
 Five stages — named for the journey from raw ore to hallmarked gold — cover
 the full MDM lifecycle across 7 domains.
