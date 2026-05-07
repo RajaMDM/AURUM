@@ -21,6 +21,16 @@ what — no overpromises. See [ROADMAP.md](ROADMAP.md) for v0.2.0 commitments.
 
 ---
 
+## Diagrams
+
+Visual walkthroughs of the pipeline, decision model, and knowledge graph layer — all render natively on GitHub:
+
+📊 **[docs/diagrams/AURUM_DIAGRAMS.md](docs/diagrams/AURUM_DIAGRAMS.md)**
+
+Includes: AURUM 5-stage pipeline · Three-tier stewardship model · gbrain memory layer · Nightly dream cycle · Knowledge compounding curve
+
+---
+
 ## The Five Stages
 
 In metallurgy, gold starts as raw ore. It is assayed, unearthed, refined,
