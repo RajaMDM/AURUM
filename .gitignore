@@ -41,3 +41,4 @@ power-platform/scripts/sample_data_manifest_*.json
 
 # Generated Office artifacts — markdown is canonical, .docx is regeneratable via pandoc
 power-platform/docs/*.docx
+docs/blog/
