@@ -19,6 +19,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       - run: pip install -r requirements.txt pytest pytest-cov
       - run: python shared/sample_data/generate_all.py
       - run: python demo/end_to_end_demo.py

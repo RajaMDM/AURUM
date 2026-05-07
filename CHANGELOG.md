@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.2.0] — 2026-05-07
+
+### The AI-Era MDM Release — Sample Data, Use Cases, Narrative Docs, Global Compliance
+
+This release transforms AURUM from a working pipeline into the **definitive open-source MDM reference repository** — covering all 7 domains end-to-end with realistic data, 41 real-world scenario playbooks, AI-era narrative documentation, and a global data sovereignty compliance guide.
+
+### Added — Sample Data
+- **All 7 domains** now have dirty sample data (previously only 4)
+- **3,000 total rows** across Customer(600), Product(500), Vendor(500), Asset(400), Employee(400), Location(300), Counterparty(300)
+- Expanded geographic coverage: GCC, UK, US, India, Europe — not GCC-only
+- All data uses fictional company names — no real organisations referenced
+
+### Added — Use-Case Library (`use_cases/`)
+- **41 MDM scenario playbooks** in three tiers:
+  - Tier 1: 35 single-domain use cases (5 per domain × 7 domains)
+  - Tier 2: 5 cross-domain pair scenarios (2–3 domains interacting)
+  - Tier 3: 1 grand scenario — New Store Opening, all 7 domains in one event
+- Every playbook: Summary, Business Impact, Scenario Setup, Example Records, AURUM Pipeline Walk-Through, Stewardship Decision Point, Expected Golden Record, CLI Demo Command
+
+### Added — Narrative Documentation (`docs/narratives/`)
+- `THE_INTELLIGENT_REFINERY.md` — MDM in the AI era: LLM rule generation, anomaly detection, MCP-native pipeline, agentic stewardship, the 5 questions every CTO should ask
+- `THE_MDM_WORLD.md` — 4-act MDM journey: single domain → silos → partial web → full golden web, before/after stories throughout
+
+### Added — Compliance & Legal (`docs/`)
+- `DATA_SOVEREIGNTY_AND_COMPLIANCE.md` — AURUM mapped to: UAE PDPL, ADDA (Abu Dhabi), DDA (Dubai), KSA PDPL + NDMO, Qatar PDPL, Bahrain PDPL, GDPR, UK GDPR, CCPA, HIPAA, India DPDP, China PIPL + DSL, Singapore PDPA, Australia Privacy Act, POPIA and more. Official public document links included.
+- `DISCLAIMER.md` — all company names and entities are fictional; any resemblance to real organisations is purely coincidental
+
+### Fixed
+- CI: demo hardcoded `n=50` rows → full 600-row dataset; `min(200, len(df))` matcher sample
+- CI: ASSAY/UNEARTH assertions `==` → `>=` for any data volume
+- CI: GitHub Actions Node.js 24 opt-in added
+- All real company names → fictional equivalents throughout docs and use cases
+- All team member last names removed — first names only
+- Version badge, status line, CITATION.cff → v0.2.0
+
+---
+
 ## [v0.1.3] — 2026-05-04
 
 ### Added

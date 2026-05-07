@@ -39,7 +39,9 @@ The UAE is unique globally: it operates multiple overlapping data regimes depend
 
 #### Federal Level — UAE PDPL (Federal Decree-Law No. 45 of 2021)
 
-**What it is:** The UAE's first federal personal data protection law, effective September 2022. Applies to any entity processing personal data in the UAE (or targeting UAE residents from outside).
+📄 **Official text:** [u.ae — Personal Data Protection](https://u.ae/en/information-and-services/justice-safety-and-the-law/cyber-safety-and-digital-security/personal-data-protection)
+📄 **UAE Official Gazette (Arabic + English):** [moj.gov.ae](https://www.moj.gov.ae/en/legislations.aspx)
+📄 **Executive Regulation (Cabinet Resolution No. 33 of 2024):** [tra.gov.ae/pdpl](https://www.tra.gov.ae/en/telecoms/data-privacy.aspx)
 
 **Key provisions relevant to MDM:**
 
