@@ -66,7 +66,7 @@ Source Systems
 | **Counterparty** | Dual role (vendor + customer), legal entity identifiers |
 
 > Note: All 7 domain profilers ship working in v0.1.2. Sample data covers
-> Customer, Product, Asset, and Location end-to-end. Domain-specific matchers
+> all 7 domains end-to-end (600–300 rows each, deliberately dirty). Domain-specific matchers
 > (SKU normalization, legal-entity disambiguation, lifecycle-aware matching)
 > remain on the v0.3.0 roadmap.
 
@@ -268,6 +268,30 @@ python runtimes/mcp/server.py
 | `refine_match` | Find duplicate candidates in a customer dataset |
 
 Compatible with Claude Code, Cursor, Hermes/Nous, and any MCP-compliant runtime.
+
+---
+
+## Use-Case Library
+
+The [`use_cases/`](use_cases/) directory contains **41 real-world MDM scenario playbooks** across all 7 domains — organised in three tiers: single-domain, cross-domain pairs, and a grand scenario where all 7 domains interact.
+
+| Tier | Use Cases | Description |
+|------|-----------|-------------|
+| [Tier 1 — Single Domain](use_cases/) | 35 | 5 scenarios per domain |
+| [Tier 2 — Cross-Domain Pairs](use_cases/08_cross_domain_pairs/) | 5 | 2–3 domains talking to each other |
+| [Tier 3 — Grand Scenario](use_cases/09_grand_scenario/) | 1 | All 7 domains in one real-world event |
+
+| Domain | Use Cases |
+|--------|-----------|
+| [Customer](use_cases/01_customer/) | Identity resolution, cross-channel merge, DQ failures, golden record conflicts, lineage audit |
+| [Product](use_cases/02_product/) | SKU deduplication, UOM conflicts, variant explosion, barcode DQ, price conflicts |
+| [Vendor](use_cases/03_vendor/) | Legal vs trading entity, group/subsidiary hierarchy, tax ID DQ, duplicate detection, vendor-customer crossover |
+| [Asset](use_cases/04_asset/) | Lifecycle state conflicts, orphaned assets, location drift, serial number dedup, maintenance lineage |
+| [Location](use_cases/05_location/) | Hierarchy conflicts, geocoding drift, store/warehouse duplicates, address standardisation, parent-child resolution |
+| [Employee](use_cases/06_employee/) | Multi-system identity merge, org hierarchy changes, multi-role assignments, leaver/rehire detection, cost centre realignment |
+| [Counterparty](use_cases/07_counterparty/) | Dual-role detection, LEI validation, legal entity dedup, jurisdiction mismatch, relationship lineage |
+
+→ **[Browse all 41 use cases](use_cases/README.md)**
 
 ---
 
