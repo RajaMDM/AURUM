@@ -3,7 +3,7 @@
 ## What This Project Is
 Vendor-agnostic Master Data Management (MDM) reference implementation.
 "Raw data in. Hallmarked golden records out."
-Version: v0.1.3 | Language: Python 3.12 | License: MIT
+Version: v0.2.0 | Language: Python 3.12 | License: MIT
 
 ## Five Pipeline Stages
 - ASSAY (01)   — Ingestion, schema mapping, migration
@@ -34,8 +34,9 @@ Customer, Product, Vendor, Asset, Location, Employee, Counterparty
 ## Related Projects
 - AURUM-PP (~/Projects/AURUM-PP) — Power Platform companion, imports AURUM matcher directly
 - BMAD project: ~/Projects/BMAD — documentation and planning agents
-  - Mary (Analyst), Paige (Tech Writer), John (PM), Sally (UX), Winston (Architect), Amelia (Dev)
-  - Config: ~/Projects/BMAD/_bmad/config.toml
+  - Core 6: Amara (BA), Inaayah (Tech Writer), Sofia (PM), Alishba (UX), Pierre (Architect), Gaurav (Dev)
+  - Extended 8: Shazia (DQ), Nadia (Governance), Tariq (Security), Arun (BI), Lena (Integration), Carlos (DataOps), Jin (Stewardship), Busi (Migration)
+  - Custom config: ~/Projects/BMAD/_bmad/custom/config.toml (never overwritten by installer)
   - Outputs go to: ~/Projects/BMAD/_bmad-output/
 
 ## gstack Skills Available
