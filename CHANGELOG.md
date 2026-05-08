@@ -7,7 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.2.1] — 2026-05-08
+
+### Why AURUM? — Comparison Diagrams & Licence Correction
+
+Added a new **Why AURUM?** section to the README making the case against traditional MDM programmes — with 4 dark-themed comparison diagrams and a summary table. Also corrected a licence mismatch: the badge and docs previously stated MIT but the actual licence is CC BY-NC-SA 4.0.
+
+### Added — Comparison Diagrams (`docs/diagrams/images/`)
+- `c01_knowledge_problem.png` — Knowledge that disappears (consultant leaves) vs knowledge that compounds in the graph (gbrain)
+- `c02_dq_rule_time.png` — 5-stage waterfall to ship a DQ rule (weeks) vs AURUM LLM rule generator (seconds)
+- `c03_invisible_entity.png` — 6 siloed domains missing the cross-domain entity vs AURUM 7-domain unified mastering
+- `c04_what_you_buy.png` — Traditional MDM (vendor + SI + consultants + 18-month programme) vs AURUM (open source, running this week)
+
+### Added — README
+- New **Why AURUM?** section above the Diagrams section — first thing visitors see after the intro
+- Comparison table: Licence · Time to value · DQ rule delivery · Institutional knowledge · Cross-domain visibility
+
+### Fixed
+- Licence badge corrected from MIT to **CC BY-NC-SA 4.0** throughout (README badge, comparison table, c04 diagram)
+
+---
+
 ## [v0.2.0] — 2026-05-07
+
 
 ### The AI-Era MDM Release — Sample Data, Use Cases, Narrative Docs, Global Compliance
 
