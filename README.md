@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/RajaMDM/AURUM/actions/workflows/ci.yml/badge.svg)](https://github.com/RajaMDM/AURUM/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![MCP Compatible](https://img.shields.io/badge/MCP-compatible-blueviolet.svg)](runtimes/mcp/)
 [![Status](https://img.shields.io/badge/status-v0.2.0%20reference-blue.svg)](ROADMAP.md)
@@ -33,7 +33,7 @@ Traditional MDM programmes share a common shape: a vendor, an SI, a long deliver
 
 | | Traditional MDM | AURUM |
 |---|---|---|
-| **Licence** | Annual vendor fee | Free (MIT) |
+| **Licence** | Annual vendor fee | CC BY-NC-SA 4.0 |
 | **Time to value** | 12–24 months | Days |
 | **DQ rule delivery** | Weeks of dev cycles | Seconds (LLM-generated) |
 | **Institutional knowledge** | Lives in people | Compounds in the graph |
