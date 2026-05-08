@@ -27,6 +27,32 @@ what — no overpromises. See [ROADMAP.md](ROADMAP.md) for v0.2.0 commitments.
 
 ---
 
+## Why AURUM?
+
+Traditional MDM programmes share a common shape: a vendor, an SI, a long delivery timeline, and knowledge that walks out the door when the consultants do. AURUM was built because that pattern keeps repeating.
+
+| | Traditional MDM | AURUM |
+|---|---|---|
+| **Licence** | Annual vendor fee | Free (MIT) |
+| **Time to value** | 12–24 months | Days |
+| **DQ rule delivery** | Weeks of dev cycles | Seconds (LLM-generated) |
+| **Institutional knowledge** | Lives in people | Compounds in the graph |
+| **Cross-domain visibility** | Siloed by domain | 7 domains, unified mastering |
+
+**The Knowledge Problem**
+![Knowledge That Disappears vs Knowledge That Compounds](https://github.com/RajaMDM/AURUM/blob/main/docs/diagrams/images/c01_knowledge_problem.png?raw=true)
+
+**Time to Ship a DQ Rule**
+![6 weeks vs seconds](https://github.com/RajaMDM/AURUM/blob/main/docs/diagrams/images/c02_dq_rule_time.png?raw=true)
+
+**The Invisible Entity Problem**
+![Siloed MDM vs Cross-Domain Mastering](https://github.com/RajaMDM/AURUM/blob/main/docs/diagrams/images/c03_invisible_entity.png?raw=true)
+
+**What You're Actually Buying**
+![Traditional MDM Cost vs AURUM](https://github.com/RajaMDM/AURUM/blob/main/docs/diagrams/images/c04_what_you_buy.png?raw=true)
+
+---
+
 ## Diagrams
 
 Visual walkthroughs of the pipeline, decision model, and knowledge graph layer — all render natively on GitHub:
