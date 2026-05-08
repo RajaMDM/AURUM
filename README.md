@@ -5,7 +5,7 @@
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![MCP Compatible](https://img.shields.io/badge/MCP-compatible-blueviolet.svg)](runtimes/mcp/)
-[![Status](https://img.shields.io/badge/status-v0.2.0%20reference-blue.svg)](ROADMAP.md)
+[![Status](https://img.shields.io/badge/status-v0.2.1%20reference-blue.svg)](ROADMAP.md)
 [![Maintained by Raja Shahnawaz Soni](https://img.shields.io/badge/maintained%20by-Raja%20Shahnawaz%20Soni-navy.svg)](https://linkedin.com/in/raja-shahnawaz/)
 
 > **Raw data in. Hallmarked golden records out.**
@@ -20,7 +20,7 @@ AURUM is a vendor-agnostic Master Data Management reference implementation.
 Five stages — named for the journey from raw ore to hallmarked gold — cover
 the full MDM lifecycle across 7 domains.
 
-**Status: v0.2.0.** This is an active reference build. Some components are
+**Status: v0.2.1.** This is an active reference build. Some components are
 working code, some are scaffolded interfaces, some are planned for v0.2.0.
 The [Component Status](#component-status) table tells you exactly what's
 what — no overpromises. See [ROADMAP.md](ROADMAP.md) for v0.2.0 commitments.

@@ -3,7 +3,7 @@
 ## What This Project Is
 Vendor-agnostic Master Data Management (MDM) reference implementation.
 "Raw data in. Hallmarked golden records out."
-Version: v0.2.0 | Language: Python 3.12 | License: MIT
+Version: v0.2.1 | Language: Python 3.12 | License: CC BY-NC-SA 4.0
 
 ## Five Pipeline Stages
 - ASSAY (01)   — Ingestion, schema mapping, migration
